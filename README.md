@@ -1,7 +1,7 @@
 <div align="center">
   <img
-    src="https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/Assets/Navia_logo.png"
-    width="240"
+    src="https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/Assets/Navia_icon.png"
+    width="220"
   >
   <br>
   <h2>Navegación Adaptativa Vial con Inteligencia Artificial</h2>
