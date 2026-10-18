@@ -1,6 +1,6 @@
 <div align="center">
   <img
-    src="https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/Assets/Navia_icon.png"
+    src="https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Navia_icon.png"
     width="220"
   >
   
