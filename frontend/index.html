@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navia</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/frontend/styles.css">
+</head>
+<body>
+  <div id="map"></div>
+
+  <div class="search-shell">
+    <div class="search-box glass">
+      <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg></span>
+      <input id="searchInput" type="text" placeholder="Buscar calle..." autocomplete="off" aria-label="Buscar calle">
+      <button id="clearSearch" class="icon-btn" type="button" aria-label="Borrar búsqueda" title="Borrar búsqueda" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div id="searchResults" class="search-results glass hidden"></div>
+  </div>
+
+  <aside class="panel glass">
+    <div class="brand">
+      <img src="/frontend/assets/Navia.svg" alt="Navia" class="logo">
+    </div>
+
+    <div class="field-card">
+      <div class="point-row">
+        <span class="point start"></span>
+        <div class="point-content">
+          <label class="label" for="startInput">Inicio</label>
+          <input id="startInput" readonly placeholder="Selecciona un punto">
+        </div>
+        <button id="pickStart" class="pick-btn" type="button" aria-label="Elegir inicio en el mapa" title="Elegir inicio en el mapa" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></button>
+      </div>
+
+      <div class="line" aria-hidden="true"></div>
+
+      <div class="point-row">
+        <span class="point end"></span>
+        <div class="point-content">
+          <label class="label" for="endInput">Fin</label>
+          <input id="endInput" readonly placeholder="Selecciona un punto">
+        </div>
+        <button id="pickEnd" class="pick-btn" type="button" aria-label="Elegir destino en el mapa" title="Elegir destino en el mapa" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></button>
+      </div>
+    </div>
+
+    <div id="selectionHint" class="hint">Elige inicio y destino desde el mapa.</div>
+
+    <div class="departure-card">
+      <span class="label">Salida</span>
+
+      <div class="departure-picker">
+        <div class="day-picker">
+          <button id="dayUp" class="time-arrow">⌃</button>
+          <div id="dayValue" class="day-value">Domingo</div>
+          <button id="dayDown" class="time-arrow">⌄</button>
+        </div>
+
+        <div class="time-picker">
+          <div class="time-column">
+            <button id="hourUp" class="time-arrow">⌃</button>
+            <div id="hourValue" class="time-number">10</div>
+            <button id="hourDown" class="time-arrow">⌄</button>
+          </div>
+
+          <div class="colon">:</div>
+
+          <div class="time-column">
+            <button id="minuteUp" class="time-arrow">⌃</button>
+            <div id="minuteValue" class="time-number">35</div>
+            <button id="minuteDown" class="time-arrow">⌄</button>
+          </div>
+
+          <button id="ampmToggle" class="ampm">AM</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="calculateBtn" class="calculate-btn" disabled>Calcular rutas</button>
+
+    <div class="routes-title">
+      <span>Rutas</span>
+      <span id="routeCount">0</span>
+    </div>
+
+    <div id="routesList" class="routes-list">
+      <div class="empty-route">Selecciona inicio y fin para calcular rutas.</div>
+    </div>
+  </aside>
+
+  <button id="resetBtn" class="reset-btn glass" type="button" title="Reiniciar recorrido" aria-label="Reiniciar recorrido"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10a9 9 0 1 1 2.6 8.4M3 4v6h6"/></svg></button>
+
+  <div id="statusPill" class="status-pill glass hidden">
+    <span class="status-dot"></span>
+    <span id="statusText"></span>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/frontend/app.js"></script>
+</body>
+</html>
