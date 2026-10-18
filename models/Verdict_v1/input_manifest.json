@@ -1,0 +1,44 @@
+{
+  "catalogue": {
+    "path": "/mnt/c/Users/Paoli/Documents/Navia/dataset/unified_v1/road_catalogue.parquet",
+    "bytes": 24345859,
+    "mtime_ns": 1792305542055992400,
+    "sha256": "96a1935c182b2c1e8d9041a4cb20bc671ee414992ce30359adb929e1c7eac5de"
+  },
+  "sumo": {
+    "path": "/mnt/c/Users/Paoli/Documents/Navia/dataset/unified_v1/sumo_observations.parquet",
+    "bytes": 19816765,
+    "mtime_ns": 1792305621723636500,
+    "sha256": "ccf67c412961810fb27d616b47ed48c677501718f18dffb7d7b037d4237a2638"
+  },
+  "unification_audit": {
+    "path": "/mnt/c/Users/Paoli/Documents/Navia/dataset/unified_v1/audit_report.json",
+    "bytes": 3486,
+    "mtime_ns": 1792305622386124000,
+    "sha256": "184b27c42f23cbf57bdf2e1902ede91972f98243dfdc773e4eb0c06b3f71099e"
+  },
+  "google": {
+    "path": "/mnt/c/Users/Paoli/Documents/Navia/dataset/google_quality_v1/google_weak_candidates.parquet",
+    "bytes": 2749683,
+    "mtime_ns": 1792306309227952500,
+    "sha256": "6f234c4f8d24616ab45c990308911f80f956f1ca7585c1befd8dbbaa29015586"
+  },
+  "quality_report": {
+    "path": "/mnt/c/Users/Paoli/Documents/Navia/dataset/google_quality_v1/quality_report.json",
+    "bytes": 3669,
+    "mtime_ns": 1792306309338850700,
+    "sha256": "bfcdd578f50e2c79cb6530e404af0db691cc7b87ed9d7602872e4d94ec074bfe"
+  },
+  "request_splits": {
+    "path": "/mnt/c/Users/Paoli/Documents/Navia/dataset/google_quality_v1/temporal_split_manifest.parquet",
+    "bytes": 151287,
+    "mtime_ns": 1792306309305262800,
+    "sha256": "749804fa330ffd4d3a08b9a7d9dcfe79c1a0abc2694a1a8a54f3ef8f89eb9e73"
+  },
+  "controls": {
+    "path": "/mnt/c/Users/Paoli/Documents/Navia/dataset/unified_v1/traffic_controls.parquet",
+    "bytes": 26273,
+    "mtime_ns": 1792305622332029500,
+    "sha256": "0158b3187f4ee698bf72d9df92275c584e3c2a23e0e30d1e2282bc7b1c928131"
+  }
+}

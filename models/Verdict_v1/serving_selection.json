@@ -1,0 +1,134 @@
+{
+  "selection_data": "validation_only_not_test",
+  "speed": "network",
+  "traffic": "network",
+  "validation_speed_network": {
+    "rows": 128798,
+    "mae_kmh": 5.255899829197112,
+    "rmse_kmh": 8.245940112476122,
+    "p50_absolute_error_kmh": 3.3042607299851916,
+    "p90_absolute_error_kmh": 11.487502333402846,
+    "bias_kmh": 0.4100298960490966
+  },
+  "validation_speed_profile": {
+    "rows": 128798,
+    "mae_kmh": 7.152543836384615,
+    "rmse_kmh": 11.21922782415267,
+    "p50_absolute_error_kmh": 4.248000289916995,
+    "p90_absolute_error_kmh": 16.758000128173826,
+    "bias_kmh": 2.625154752090247
+  },
+  "validation_traffic_network": {
+    "rows": 9908,
+    "macro_f1": 0.37167391843287145,
+    "log_loss": 0.2105566371287371,
+    "brier_multiclass": 0.08324750835260822,
+    "confusion_matrix": [
+      [
+        551.4346929593012,
+        2.082571629434824,
+        6.4591788444668055
+      ],
+      [
+        8.052314386703074,
+        0.0,
+        0.5808002753183246
+      ],
+      [
+        6.342608963139355,
+        0.0,
+        1.0478428564965725
+      ]
+    ],
+    "per_class": {
+      "NORMAL": {
+        "precision": 0.9745596148824106,
+        "recall": 0.9847462324994738,
+        "f1-score": 0.979626443093588,
+        "support": 559.9764434332028
+      },
+      "SLOW": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 8.633114662021399
+      },
+      "TRAFFIC_JAM": {
+        "precision": 0.1295581010028992,
+        "recall": 0.14178332828211196,
+        "f1-score": 0.1353953122050263,
+        "support": 7.390451819635928
+      },
+      "accuracy": 0.9591710526141509,
+      "macro avg": {
+        "precision": 0.36803923862843657,
+        "recall": 0.3755098535938619,
+        "f1-score": 0.37167391843287145,
+        "support": 576.0000099148601
+      },
+      "weighted avg": {
+        "precision": 0.9491109558133459,
+        "recall": 0.9591710526141509,
+        "f1-score": 0.9541117266809684,
+        "support": 576.0000099148601
+      }
+    }
+  },
+  "validation_traffic_profile": {
+    "rows": 9908,
+    "macro_f1": 0.328631485146712,
+    "log_loss": 0.14669770976701688,
+    "brier_multiclass": 0.054508198433894185,
+    "confusion_matrix": [
+      [
+        559.9764434332028,
+        0.0,
+        0.0
+      ],
+      [
+        8.633114662021399,
+        0.0,
+        0.0
+      ],
+      [
+        7.390451819635928,
+        0.0,
+        0.0
+      ]
+    ],
+    "per_class": {
+      "NORMAL": {
+        "precision": 0.9721813086704186,
+        "recall": 1.0,
+        "f1-score": 0.985894455440136,
+        "support": 559.9764434332028
+      },
+      "SLOW": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 8.633114662021399
+      },
+      "TRAFFIC_JAM": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 7.390451819635928
+      },
+      "accuracy": 0.9721813086704186,
+      "macro avg": {
+        "precision": 0.32406043622347286,
+        "recall": 0.3333333333333333,
+        "f1-score": 0.328631485146712,
+        "support": 576.0000099148601
+      },
+      "weighted avg": {
+        "precision": 0.9451364969281277,
+        "recall": 0.9721813086704186,
+        "f1-score": 0.9584681619007012,
+        "support": 576.0000099148601
+      }
+    }
+  },
+  "speed_profile_direction": "marginalized_across_directions"
+}

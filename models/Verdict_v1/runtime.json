@@ -1,0 +1,17 @@
+{
+  "tensorflow": "2.21.0",
+  "gpus": [
+    "/physical_device:GPU:0"
+  ],
+  "cpu_threads": 16,
+  "mixed_precision": true,
+  "python": "3.12.8",
+  "packages": {
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "geopandas": "1.2.0",
+    "pyarrow": "26.0.0",
+    "joblib": "1.6.0"
+  }
+}
