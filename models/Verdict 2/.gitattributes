@@ -1,0 +1,2 @@
+# Preserve exact artifact bytes across Git clones on Windows and Linux.
+* -text

@@ -1,0 +1,47 @@
+{
+  "model_name": "Verdict_v2_early",
+  "version": "2.0.0-early-own-simulator-support-calibration",
+  "timezone": "America/El_Salvador",
+  "supervision": "Sealed own mesoscopic simulator ONLY; no SUMO or per-street Google circuit labels.",
+  "real_world_validated": false,
+  "supports_future_incident_prediction": false,
+  "uses_live_observations": false,
+  "source_release_sha256": "89dc1f4c67823c258a6049d6ce0c07bd81fdc380f61e48284cee729e4bd4d3bc",
+  "source_run": "/home/mandarina/navia_runs/simulador_propio_21d_v13",
+  "split": {
+    "train": {
+      "start": "2026-10-19 00:00:00-06:00",
+      "end_exclusive": "2026-10-29 00:00:00-06:00"
+    },
+    "validation": {
+      "start": "2026-10-29 00:00:00-06:00",
+      "end_exclusive": "2026-11-02 00:00:00-06:00"
+    },
+    "test": {
+      "start": "2026-11-02 00:00:00-06:00",
+      "end_exclusive": "2026-11-09 00:00:00-06:00"
+    }
+  },
+  "prediction_time": "Estimated LOCAL arrival at each directed road",
+  "proxy_class_thresholds": {
+    "normal_min_ratio": 0.8,
+    "slow_min_ratio": 0.5,
+    "calibrated_probabilities": false
+  },
+  "limitations": [
+    "Only roads with actual synthetic vehicle exposure have speed observations; absent rows are NOT measured free-flow labels.",
+    "Night/peak comparisons use the same directed roads and at least 20 vehicle-seconds per period; unpaired roads are not evidence of temporal accuracy.",
+    "Declared temporal screening: >=25 paired roads and >=10% slowing by >10% for each weekday peak period. Not a Salvadoran calibration target.",
+    "Vehicle mix, OD, capacities, control timing and calendar/weekend assumptions remain uncalibrated priors.",
+    "No independent real route validation is possible from the current Google street-repeated circuit rows.",
+    "Train/test must split whole dates/weeks, with hour/day-type and regional balancing; do not random-split adjacent intervals.",
+    "Fixed four-vehicle groups and one-packet lane storage floor are mesoscopic approximations.",
+    "Most speed limits/lanes and all demand timing/OD/control capacities are uncalibrated priors where OSM lacks tags.",
+    "Weather, holidays, freight, buses/taxis and overnight demand are not independently calibrated.",
+    "Only about half of the prepared directed network is visited by the sampled OD routes; unsupported roads/times require uncertainty or an explicit structural prior, not confident traffic claims.",
+    "This approval concerns initial synthetic training viability, not a deployed routing safety claim or accuracy on future real Google observations.",
+    "No independent spatial-holdout or real-route accuracy claim.",
+    "Future speeds represent a mean synthetic scenario, not a deterministic real-day prediction.",
+    "Hourly profile and GPU neural residual form ONE bundle: .keras alone lacks the profile preprocessing."
+  ]
+}
