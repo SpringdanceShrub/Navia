@@ -9,10 +9,10 @@
   <p align="center">
   <img src="https://img.shields.io/badge/status-not_working-lightgrey.svg"/>
   <a href="https://opensource.org/licenses/Apache-2.0">
-  <img src="https://img.shields.io/badge/license-Apache2.0-blue.svg?style=flat"></a> 
-  <img src="https://img.shields.io/badge/python-3.12.8-3572a5.svg"/> 
-  <img src="https://img.shields.io/badge/platform-windows-lightgrey.svg"/>
+  <img src="https://img.shields.io/badge/license-Apache_2.0-3da638.svg?style=flat"></a> 
+  <img src="https://img.shields.io/badge/python-3.12.8-3776AB.svg"/> 
+  <img src="https://img.shields.io/badge/platform-windows-0078D4.svg"/>
+  <img src="https://img.shields.io/badge/model-Verdict_2-946e14.svg?style=flat"></a> 
   </p>
+  <h2></h2>
 </div>
-
-
