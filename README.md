@@ -14,5 +14,8 @@
   <img src="https://img.shields.io/badge/platform-windows-0078D4.svg"/>
   <img src="https://img.shields.io/badge/model-Verdict_2_Luna-d99a49.svg?style=flat"></a> 
   </p>
-  <h2></h2>
 </div>
+
+---
+
+
