@@ -1,8 +1,7 @@
-# Entorno virtual
-.env/
-
-# Python
+.venv/
+venv/
+.cache/
 __pycache__/
-
-# Logs
-.log
+*.pyc
+*.log
+.env
