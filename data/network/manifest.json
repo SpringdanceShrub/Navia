@@ -1,0 +1,197 @@
+{
+  "schema": "navia-car-network-v1",
+  "segment_count": 274229,
+  "nodes": 246996,
+  "pieces": 283969,
+  "directed_edges": 542961,
+  "routing_states": 543001,
+  "transitions": 891325,
+  "heuristic_metric_scale": 0.03142032668019095,
+  "skipped_roads": {
+    "restricted_access": 3851,
+    "conditional_or_reversible": 16,
+    "unmatched_geometry": 115
+  },
+  "barrier_nodes": 1122,
+  "turns": {
+    "mapped_turn_relations": 707,
+    "unmapped_turn_relations": [
+      "relation/6961867",
+      "relation/7450972",
+      "relation/7450973",
+      "relation/7450978",
+      "relation/7450979",
+      "relation/14082870",
+      "relation/14082872",
+      "relation/14107083",
+      "relation/14179855",
+      "relation/14462624",
+      "relation/14462625",
+      "relation/14734852",
+      "relation/15054705",
+      "relation/15601651",
+      "relation/15601654",
+      "relation/15601655",
+      "relation/15601656",
+      "relation/15626643",
+      "relation/15626644",
+      "relation/15641709",
+      "relation/15981512",
+      "relation/15981513",
+      "relation/15981514",
+      "relation/15987637",
+      "relation/16029446",
+      "relation/16160110",
+      "relation/16160111",
+      "relation/16233642",
+      "relation/16233643",
+      "relation/16389437",
+      "relation/16389438",
+      "relation/16389439",
+      "relation/16389440",
+      "relation/16737347",
+      "relation/17140205",
+      "relation/17245760",
+      "relation/17245851",
+      "relation/17245852",
+      "relation/17273331",
+      "relation/17273332",
+      "relation/17283382",
+      "relation/17283383",
+      "relation/17283414",
+      "relation/17283415",
+      "relation/17283416",
+      "relation/17283417",
+      "relation/17283418",
+      "relation/17283419",
+      "relation/17620913",
+      "relation/17620914",
+      "relation/17621217",
+      "relation/17630167",
+      "relation/17707158",
+      "relation/17707159",
+      "relation/17707160",
+      "relation/17707161",
+      "relation/17707162",
+      "relation/17707163",
+      "relation/17707164",
+      "relation/17761651",
+      "relation/17761653",
+      "relation/17761657",
+      "relation/17761663",
+      "relation/17761664",
+      "relation/17761665",
+      "relation/17761666",
+      "relation/17761668",
+      "relation/17761669",
+      "relation/17761673",
+      "relation/17761675",
+      "relation/17761678",
+      "relation/17770434",
+      "relation/17770435",
+      "relation/17770436",
+      "relation/17770437",
+      "relation/17778376",
+      "relation/18000608",
+      "relation/18109135",
+      "relation/18109136",
+      "relation/18157425",
+      "relation/18492550",
+      "relation/18543873",
+      "relation/19185061",
+      "relation/19560387",
+      "relation/19560487",
+      "relation/20225859"
+    ],
+    "via_way_patterns": 47,
+    "via_way_state_copies": 40,
+    "forbidden_node_turns": 682
+  },
+  "timezone": "America/El_Salvador",
+  "runtime": "CPU only",
+  "input_sha256": {
+    "parents.parquet": "5c2e16ac99e652afa55f27376ac26692a39fe63774f2ab21c6017bf1c139b96e",
+    "road_controls.parquet": "a42fbed3e8bfc17e093ec318ced185feebe95618918b215083d169379da71c67",
+    "segments.parquet": "86fe6ffb2bf399b7c72f12bcdc46203939ae5537f4ee8f7350bea05954dadff3",
+    "turn_restrictions.parquet": "aa1262f5388d8d3587ec9b549c961bd9ee09bf7f8d93c89b1a5a026409f23016",
+    "ways.parquet": "b66241248787c42c60238e0bcbdc89b01e06a3d429e7a3d879521b922f073ee7",
+    "way_nodes.parquet": "5d0ecd2530cd85c69ed2b832e6b634c6618e6b721e9d5837a70e29234fc7a6dd"
+  },
+  "builder_sha256": {
+    "scripts/build_network.py": "b2ebae9294bea1a557986d8bf2e2582b60ccb9449c6533084fd0ca3bce5825ce",
+    "backend/turns.py": "4b91ccf6d32aeeb51fff5450a2a9a62e879031e8e71483081df27446bd3a85a1"
+  },
+  "array_shapes": {
+    "segment_ids": [
+      274229
+    ],
+    "segment_length": [
+      274229
+    ],
+    "node_xy": [
+      246996,
+      2
+    ],
+    "node_osm": [
+      246996
+    ],
+    "part_u": [
+      283969
+    ],
+    "part_v": [
+      283969
+    ],
+    "part_sid": [
+      283969
+    ],
+    "part_way": [
+      283969
+    ],
+    "part_length": [
+      283969
+    ],
+    "part_destination": [
+      283969
+    ],
+    "geometry": [
+      1462486,
+      2
+    ],
+    "geometry_first": [
+      283970
+    ],
+    "part_bbox": [
+      283969,
+      4
+    ],
+    "edge_from": [
+      542961
+    ],
+    "edge_to": [
+      542961
+    ],
+    "edge_part": [
+      542961
+    ],
+    "edge_reverse": [
+      542961
+    ],
+    "state_edge": [
+      543001
+    ],
+    "state_first": [
+      543002
+    ],
+    "state_next": [
+      891325
+    ],
+    "node_first": [
+      246997
+    ],
+    "node_edges": [
+      542961
+    ]
+  },
+  "elapsed_seconds": 45.969651699997485,
+  "osm_attribution": "https://www.openstreetmap.org/copyright"
+}

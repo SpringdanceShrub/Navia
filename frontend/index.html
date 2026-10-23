@@ -3,101 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Navia</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <title>Navia · Rutas con tráfico previsto</title>
+  <link rel="icon" type="image/svg+xml" href="/frontend/assets/Navia.svg">
+  <link rel="stylesheet" href="/frontend/vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="/frontend/styles.css">
 </head>
 <body>
-  <div id="map"></div>
-
+  <main id="map" aria-label="Mapa de carreteras de El Salvador"></main>
   <div class="search-shell">
     <div class="search-box glass">
-      <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg></span>
-      <input id="searchInput" type="text" placeholder="Buscar calle..." autocomplete="off" aria-label="Buscar calle">
-      <button id="clearSearch" class="icon-btn" type="button" aria-label="Borrar búsqueda" title="Borrar búsqueda" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <input id="searchInput" type="search" placeholder="Buscar calle…" autocomplete="off" aria-label="Buscar calle">
+      <button id="clearSearch" class="icon-btn" type="button" aria-label="Borrar búsqueda" disabled>×</button>
     </div>
-    <div id="searchResults" class="search-results glass hidden"></div>
+    <div id="searchResults" class="search-results glass hidden" role="listbox" aria-label="Resultados de búsqueda"></div>
+    <div id="trafficLegend" class="traffic-legend glass hidden">
+      <div class="traffic-legend-items"><span><i class="normal"></i>Fluido</span><span><i class="slow"></i>Moderado</span><span><i class="jam"></i>Atasco</span></div>
+      <div id="trafficTime" class="traffic-caption"></div>
+      <div id="trafficDetail" class="traffic-caption">Las calles locales aparecen al acercarse.</div>
+    </div>
   </div>
-
-  <aside class="panel glass">
-    <div class="brand">
-      <img src="/frontend/assets/Navia.svg" alt="Navia" class="logo">
-    </div>
-
-    <div class="field-card">
-      <div class="point-row">
-        <span class="point start"></span>
-        <div class="point-content">
-          <label class="label" for="startInput">Inicio</label>
-          <input id="startInput" readonly placeholder="Selecciona un punto">
-        </div>
-        <button id="pickStart" class="pick-btn" type="button" aria-label="Elegir inicio en el mapa" title="Elegir inicio en el mapa" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></button>
+  <aside class="panel glass" aria-label="Planificar recorrido">
+    <div class="brand"><img src="/frontend/assets/Navia.svg" alt="Navia" class="logo"><button id="panelToggle" class="icon-btn" type="button" aria-expanded="true" aria-label="Contraer planificador">−</button></div>
+    <div id="plannerBody">
+      <label class="label" for="modelSelect">Modelo</label>
+      <div class="model-picker"><img id="modelIcon" src="/frontend/assets/Verdict.svg" alt=""><select id="modelSelect" aria-label="Modelo de tráfico"><option value="">Buscando modelos…</option></select></div>
+      <div class="view-switch" role="group" aria-label="Vista del mapa">
+        <button id="normalMode" type="button" aria-pressed="true">Normal</button>
+        <button id="trafficMode" type="button" aria-pressed="false">Tráfico</button>
       </div>
-
-      <div class="line" aria-hidden="true"></div>
-
-      <div class="point-row">
-        <span class="point end"></span>
-        <div class="point-content">
-          <label class="label" for="endInput">Fin</label>
-          <input id="endInput" readonly placeholder="Selecciona un punto">
-        </div>
-        <button id="pickEnd" class="pick-btn" type="button" aria-label="Elegir destino en el mapa" title="Elegir destino en el mapa" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></button>
+      <div class="field-card">
+        <div class="point-row"><span class="point start"></span><div class="point-content"><label class="label" for="startInput">Inicio</label><input id="startInput" readonly placeholder="Selecciona un punto"></div><button id="pickStart" class="pick-btn" type="button" aria-label="Elegir inicio en el mapa" aria-pressed="false">⌖</button></div>
+        <div class="line" aria-hidden="true"></div>
+        <div class="point-row"><span class="point end"></span><div class="point-content"><label class="label" for="endInput">Destino</label><input id="endInput" readonly placeholder="Selecciona un punto"></div><button id="pickEnd" class="pick-btn" type="button" aria-label="Elegir destino en el mapa" aria-pressed="false">⌖</button></div>
       </div>
-    </div>
-
-    <div id="selectionHint" class="hint">Elige inicio y destino desde el mapa.</div>
-
-    <div class="departure-card">
-      <span class="label">Salida</span>
-
-      <div class="departure-picker">
-        <div class="day-picker">
-          <button id="dayUp" class="time-arrow">⌃</button>
-          <div id="dayValue" class="day-value">Domingo</div>
-          <button id="dayDown" class="time-arrow">⌄</button>
-        </div>
-
-        <div class="time-picker">
-          <div class="time-column">
-            <button id="hourUp" class="time-arrow">⌃</button>
-            <div id="hourValue" class="time-number">10</div>
-            <button id="hourDown" class="time-arrow">⌄</button>
+      <div id="selectionHint" class="hint" aria-live="polite">Elige inicio y destino en el mapa.</div>
+      <div class="departure-card">
+        <label class="label" for="departureInput">Salida · Hora de El Salvador</label>
+        <input id="departureInput" type="date" min="2020-01-01" max="2100-12-31" required>
+        <div class="departure-picker" role="group" aria-label="Día y hora de salida">
+          <div class="day-picker">
+            <button class="time-arrow" type="button" data-days="1" aria-label="Día siguiente">⌃</button>
+            <span id="departureLabel" class="day-value"></span>
+            <button class="time-arrow" type="button" data-days="-1" aria-label="Día anterior">⌄</button>
           </div>
-
-          <div class="colon">:</div>
-
-          <div class="time-column">
-            <button id="minuteUp" class="time-arrow">⌃</button>
-            <div id="minuteValue" class="time-number">35</div>
-            <button id="minuteDown" class="time-arrow">⌄</button>
+          <div class="time-picker" role="group" aria-label="Hora de salida">
+            <div class="time-column">
+              <button class="time-arrow" type="button" data-minutes="60" aria-label="Aumentar una hora">⌃</button>
+              <input id="departureHour" class="time-number" type="text" inputmode="numeric" maxlength="2" pattern="(?:0?[1-9]|1[0-2])" role="spinbutton" aria-label="Hora" aria-valuemin="1" aria-valuemax="12" required>
+              <button class="time-arrow" type="button" data-minutes="-60" aria-label="Disminuir una hora">⌄</button>
+            </div>
+            <span class="colon" aria-hidden="true">:</span>
+            <div class="time-column">
+              <button class="time-arrow" type="button" data-minutes="1" aria-label="Aumentar un minuto">⌃</button>
+              <input id="departureMinute" class="time-number" type="text" inputmode="numeric" maxlength="2" pattern="[0-5]?[0-9]" role="spinbutton" aria-label="Minutos" aria-valuemin="0" aria-valuemax="59" required>
+              <button class="time-arrow" type="button" data-minutes="-1" aria-label="Disminuir un minuto">⌄</button>
+            </div>
+            <button id="departurePeriod" class="ampm" type="button" aria-label="Cambiar a PM">AM</button>
           </div>
-
-          <button id="ampmToggle" class="ampm">AM</button>
         </div>
       </div>
-    </div>
-
-    <button id="calculateBtn" class="calculate-btn" disabled>Calcular rutas</button>
-
-    <div class="routes-title">
-      <span>Rutas</span>
-      <span id="routeCount">0</span>
-    </div>
-
-    <div id="routesList" class="routes-list">
-      <div class="empty-route">Selecciona inicio y fin para calcular rutas.</div>
+      <button id="calculateBtn" class="calculate-btn" type="button" disabled>Calcular rutas</button>
+      <div class="routes-title"><span>Rutas eficientes</span><span id="routeCount">0</span></div>
+      <div id="routesList" class="routes-list" aria-live="polite"><div class="empty-route">Selecciona inicio y destino para calcular rutas.</div></div>
+      <p class="model-note">Tráfico y tiempos estimados con datos sintéticos. Las rutas consideran el tráfico previsto al pasar por cada tramo.</p>
     </div>
   </aside>
-
-  <button id="resetBtn" class="reset-btn glass" type="button" title="Reiniciar recorrido" aria-label="Reiniciar recorrido"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10a9 9 0 1 1 2.6 8.4M3 4v6h6"/></svg></button>
-
-  <div id="statusPill" class="status-pill glass hidden">
-    <span class="status-dot"></span>
-    <span id="statusText"></span>
-  </div>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <button id="resetBtn" class="reset-btn glass" type="button" aria-label="Reiniciar recorrido">↺</button>
+  <div id="statusPill" class="status-pill glass hidden" role="status"><span class="status-dot"></span><span id="statusText"></span></div>
+  <script src="/frontend/vendor/leaflet/leaflet.js"></script>
   <script src="/frontend/app.js"></script>
 </body>
 </html>

@@ -325,6 +325,20 @@ button:focus-visible, input:focus-visible {
   font-weight: 800;
 }
 
+input.time-number {
+  width: 36px;
+  padding: 3px 0;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text);
+}
+
+input.time-number:hover { background: rgba(255,255,255,.06); }
+input.time-number:user-invalid { border-color: #e26064; }
+.time-arrow:hover { color: var(--accent); background: rgba(255,255,255,.07); border-radius: 5px; }
+.day-value { text-transform: capitalize; }
+
 .colon { font-size: 20px; font-weight: 800; }
 
 .ampm {
@@ -486,3 +500,37 @@ button:focus-visible, input:focus-visible {
   .brand { height: 112px; margin-bottom: 12px; }
   .logo { width: 112px; height: 112px; }
 }
+/* Model selection and traffic controls use the existing Navia palette. */
+.brand { height:88px; margin-bottom:12px; position:relative; }
+.logo { width:88px; height:88px; }
+.brand .icon-btn { position:absolute; right:0; top:0; }
+.model-picker { display:flex; align-items:center; gap:10px; margin:6px 0 14px; min-width:0; }
+.model-picker img { width:34px; height:34px; object-fit:contain; flex-shrink:0; }
+.model-picker select { width:100%; min-width:0; border:1px solid var(--line); background:#424d45; color:var(--text); border-radius:10px; padding:10px; font:inherit; font-size:13px; }
+#departureInput { color-scheme:dark; display:block; width:100%; min-width:0; margin-top:10px; padding:8px; background:transparent; color:var(--text); border:1px solid var(--line); border-radius:8px; font:inherit; font-size:13px; }
+.view-switch { display:flex; gap:4px; padding:4px; margin-bottom:14px; border-radius:12px; background:var(--panel-2); }
+.view-switch button { flex:1; min-height:39px; padding:8px 12px; border-radius:9px; background:transparent; color:var(--text); font:inherit; font-size:14px; cursor:pointer; }
+.view-switch button[aria-pressed="true"] { color:#27352c; background:var(--accent); font-weight:700; }
+.traffic-legend { width:fit-content; max-width:100%; margin-top:8px; border-radius:12px; padding:12px; color:var(--text); }
+.traffic-legend-items { display:flex; flex-wrap:wrap; gap:15px; font-size:12px; }
+.traffic-legend-items span { display:inline-flex; gap:6px; align-items:center; }
+.traffic-legend-items i { display:inline-block; width:20px; height:4px; border-radius:3px; }
+.traffic-legend-items .normal { background:#35b57b; }
+.traffic-legend-items .slow { background:#e5b64b; }
+.traffic-legend-items .jam { background:#e26064; }
+.traffic-caption { color:var(--muted); margin-top:7px; font-size:11px; }
+.route-card { display:block; width:100%; color:var(--text); text-align:left; font:inherit; }
+.route-top,.route-bottom,.route-arrival,.route-conditions { display:flex; }
+.route-arrival { margin-top:9px; font-size:12px; }
+.route-conditions { margin-top:5px; color:var(--muted); font-size:11px; }
+.route-time { white-space:nowrap; font-size:16px; }
+.model-note { margin:14px 2px 0; font-size:11px; color:var(--muted); line-height:1.5; }
+.search-result { width:100%; text-align:left; font:inherit; }
+.search-result strong { font-size:13px; }
+.search-result span span { font-size:11px; }
+.search-icon { font-size:25px; }
+.reset-btn { font-size:26px; }
+.picking { cursor:crosshair; }
+.panel .icon-btn,.pick-btn { min-width:38px; min-height:38px; }
+select:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+@media(max-width:760px) { .panel { top:auto; bottom:10px; max-height:55vh; width:min(340px,calc(100vw - 20px)); } .brand { height:45px; margin-bottom:10px; } .logo { width:65px; height:45px; } .search-shell { max-width:calc(100vw - 20px); } .status-pill { max-width:calc(100vw - 90px); bottom:10px; left:64px; transform:none; font-size:11px; } }
