@@ -12,10 +12,10 @@
   <img src="https://img.shields.io/badge/license-Apache_2.0-3da638.svg?style=flat"></a> 
   <img src="https://img.shields.io/badge/python-3.12.8-3776AB.svg"/> 
   <img src="https://img.shields.io/badge/platform-windows-0078D4.svg"/>
-  <img src="https://img.shields.io/badge/model-Verdict_2_Luna-d99a49.svg?style=flat"></a> 
+  <img src="https://img.shields.io/badge/model-Verdict_3-d99a49.svg?style=flat"></a> 
   </p>
 </div>
 
----
+
 
 
