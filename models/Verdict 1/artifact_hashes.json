@@ -1,9 +1,0 @@
-{
-  "Verdict_v1.keras": "abec8a5ad9705dd8397bef94bcfeebe0a0d952bcb5260305e1ba2ade45c601f6",
-  "preprocessor.joblib": "b6d11de31229a446a8e7a244a69919bbfdeeb6daa51b52514fd93fc160f3525c",
-  "static_features.parquet": "f0b870b2f2a4c893da7903ec24c20bb1cd4a416380c0b8f8b062aea5fa1c7e00",
-  "feature_schema.json": "c04bdda98cd1192b2dfd3b2ce16513ef8c852034f65bd3cf63898d0f3926a4f5",
-  "model_metadata.json": "7d7d35a72bb0365e538de929794218789b7f1d78d50893b0c41ed41b0ec2579f",
-  "baselines.joblib": "6e9c4d8c98dafc63a4110ca32a52e88c23e807990da0679c4c415b2e2711c135",
-  "serving_selection.json": "d4cd7a955bfb3cea13b7a67eabc23abdf5c4ee2170ac31dae4c6f4a78f11b754"
-}

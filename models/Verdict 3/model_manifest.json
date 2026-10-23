@@ -1,0 +1,13 @@
+{
+  "version": "4.0.0",
+  "artifact_sha256": {
+    "conditional_residual.npz": "2aa4ec3a513304d30dcad46b5b9cb45c50b14e199b8bee0189c26d6edc44338d",
+    "road_context.npz": "7de777fcc372e3d55cba16811548afaa7fa2c74da61c47a4241e98a9e04f5275",
+    "base/Verdict 3.npz": "728eafc89bb49a5c3797637aa0df56d5156952a274bc844517a10b33a28cbeae"
+  },
+  "normal_dataset_manifest_sha256": "4bee2bc90082a7ce443a853cbea49f8dc0d3772c6a4158af288680ae2e191aed",
+  "condition_dataset_manifest_sha256": "e8ff059c1cc8807b64421365c63dcac596dc0cbd69d92ba5e8e80533d9d48140",
+  "normal_training_days": 128,
+  "name": "Verdict 3",
+  "normal_model_path": "base/Verdict 3.npz"
+}
