@@ -1,4 +1,3 @@
-"""Single-thread CPU FIFO A*: every edge is integrated at its arrival time."""
 import heapq,math
 import numpy as np
 from numba import njit

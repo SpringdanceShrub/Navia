@@ -41,7 +41,6 @@ class TrafficService:
         if zoom<10:use&=np.isin(n.highways,['trunk','trunk_link','primary','primary_link'])
         index=np.flatnonzero(use);truncated=len(index)>9000
         if truncated:
-            # Preserve the most useful road hierarchy at a wide view; never randomize colors.
             rank=np.array([0 if n.highways[i].startswith('trunk') else 1 if n.highways[i].startswith('primary') else 2 if n.highways[i].startswith('secondary') else 3 for i in index])
             index=np.sort(index[np.argsort(rank,kind='stable')[:9000]])
         prediction=model.predict_at(n.segment_ids[index],at) if len(index) else None

@@ -1,4 +1,3 @@
-"""Geographically distinct routes evaluated with actual hourly arrival costs."""
 from datetime import timedelta
 import math,time
 import numpy as np
