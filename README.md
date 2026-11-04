@@ -20,7 +20,7 @@
 
 </div>
 
-## 🧭 ¿Qué es Navia?
+##  ¿Qué es Navia?
 
 Navia es un planificador de rutas para El Salvador que combina una red vial local con estimaciones de tráfico para encontrar recorridos con menor tiempo de viaje
 
@@ -28,7 +28,7 @@ Las carreteras se evalúan según la hora prevista de paso por cada tramo. Si un
 
 La ruta principal prioriza el tiempo total de llegada: puede atravesar tráfico si hacerlo resulta más rápido que evitarlo.
 
-## 🗺️ Vista de tráfico
+##  Vista de tráfico
 
 ![Mapa de tráfico estimado](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture1.jpg)
 
@@ -40,14 +40,14 @@ La vista tráfico permite explorar las condiciones estimadas para la fecha y hor
 
 Las calles locales aparecen al acercarse al mapa para mantener una vista más clara al explorar zonas amplias
 
-## ✨ Características
+##  Características
 
 - Hasta tres opciones de ruta con diversidad geográfica, cuando existen alternativas suficientemente eficientes
 - Cálculo de tiempos con tráfico, considerando las velocidades previstas durante el recorrido
 - Selección de fecha y hora, con controles de horas, minutos y AM/PM
 - Búsqueda local de calles y selección de inicio y destino sobre el mapa
 
-## ⚡ Impulsado por Verdict 3
+##  Impulsado por Verdict 3
 
 ### 46,1 millones de parámetros espaciotemporales
 
@@ -59,7 +59,7 @@ Parámetros estadísticos que representan el tráfico mediante combinaciones de:
 
 Navia incluye el modelo y la red vial preparada necesarios para ejecutar las predicciones y calcular las rutas.
 
-## 🚀 Instalación
+##  Instalación
 
 ### Requisitos
 
@@ -121,7 +121,7 @@ python app.py
 
 No necesitas crear el entorno ni instalar las dependencias otra vez
 
-## 🛠️ Uso
+##  Uso
 
 1. Selecciona el modelo de tráfico
 2. Utiliza los botones de Inicio y Destino para elegir ambos puntos en el mapa
@@ -132,7 +132,7 @@ No necesitas crear el entorno ni instalar las dependencias otra vez
 
 La vista de tráfico muestra las condiciones de la hora seleccionada. Los tiempos de las rutas consideran las condiciones a la hora de paso por cada tramo.
 
-## 📌 Consideraciones
+##  Consideraciones
 
 > Las predicciones se basan en datos sintéticos, apoyados en referencias parciales de tráfico habitual. No representan tráfico en tiempo real y pueden diferir de las condiciones reales
 
@@ -141,7 +141,7 @@ La vista de tráfico muestra las condiciones de la hora seleccionada. Los tiempo
 - Los tiempos de viaje son estimaciones. Accidentes, obras, clima y otros eventos pueden modificar las condiciones reales
 - Navia está en fase beta
 
-## 📄 Licencias y atribución
+##  Licencias y atribución
 
 - Navia: [Apache 2.0](LICENSE)
 - Datos viales · © OpenStreetMap contributors: [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/) · [Atribución](data/README.md)
