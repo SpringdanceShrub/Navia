@@ -146,3 +146,9 @@ La vista de tráfico muestra las condiciones de la hora seleccionada. Los tiempo
 - Navia: [Apache 2.0](LICENSE)
 - Datos viales · © OpenStreetMap contributors: [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/) · [Atribución](data/README.md)
 - Leaflet: [Licencia](frontend/vendor/leaflet/LICENSE)
+
+## Miembros del equipo
+
+- Abdiel Alfredo Hernández Vásquez - SMSS077825
+- Ruth Isabel Amaya Berríos - SMSS061025
+- William Daniel Roque Díaz - SMSS025025
