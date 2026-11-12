@@ -9,14 +9,12 @@
 
   <p>
     <img src="https://img.shields.io/badge/status-beta-lightgrey.svg" alt="Estado: beta">
-    <a href="LICENSE">
-      <img src="https://img.shields.io/badge/license-apache_2.0-3da638.svg?style=flat" alt="Licencia Apache 2.0">
-    </a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-apache_2.0-3da638.svg?style=flat" alt="Licencia Apache 2.0"></a>
     <img src="https://img.shields.io/badge/python-3.12+-3776AB.svg" alt="Python 3.12">
     <img src="https://img.shields.io/badge/platform-windows-0078D4.svg" alt="Windows">
     <img src="https://img.shields.io/badge/model-verdict_3-d99a49.svg?style=flat" alt="Verdict 3">
   </p>
-  <p><strong>v0.1.0 · Many-Flowered Rose</strong></p>
+  <p><strong>v0.1.1 · Many-Flowered Rose</strong></p>
 
 </div>
 
@@ -26,7 +24,7 @@ Navia es un planificador de rutas para El Salvador que combina una red vial loca
 
 Las carreteras se evalúan según la hora prevista de paso por cada tramo. Si un viaje comienza a las 7:00 y llega a otra zona a las 11:00, Navia utiliza las condiciones estimadas para esa hora al calcular el recorrido
 
-La ruta principal prioriza el tiempo total de llegada: puede atravesar tráfico si hacerlo resulta más rápido que evitarlo.
+La ruta principal prioriza el tiempo total de llegada: puede atravesar tráfico si hacerlo resulta más rápido que evitarlo
 
 ##  Vista de tráfico
 
@@ -53,73 +51,37 @@ Las calles locales aparecen al acercarse al mapa para mantener una vista más cl
 
 Parámetros estadísticos que representan el tráfico mediante combinaciones de:
 
-- 274.229 tramos de carretera.
-- 7 días de la semana.
-- 24 horas del día.
+- 274.229 tramos de carretera
+- 7 días de la semana
+- 24 horas del día
 
-Navia incluye el modelo y la red vial preparada necesarios para ejecutar las predicciones y calcular las rutas.
+Navia incluye el modelo y la red vial preparada necesarios para ejecutar las predicciones y calcular las rutas
+
+## Información extra
+
+Puede obtener más información técnica sobre el proyecto consultando nuestro PDF informativo haciendo clic <a href="docs/Info.pdf">aquí</a>
 
 ##  Instalación
 
 ### Requisitos
 
-- Windows, plataforma probada
-- Python 3.12+, versión utilizada para verificar esta instalación
+- Windows
+- Python 3.12+
 - Conexión a Internet para instalar las dependencias y cargar el mapa base
 
-### 1. Descargar Navia
+### Descargar e instalar Navia
 
-Descarga el paquete completo desde [Releases](https://github.com/SpringdanceShrub/Navia/releases) y extrae el ZIP.
+1. Descargar el paquete completo desde [Releases](https://github.com/SpringdanceShrub/Navia/releases) y extraer el ZIP
+2. Hacer dobre click sobre **`Navia.bat`**
+3. Espera mientras prepara el entorno y abre Navia en el navegador
 
-### 2. Instalar las dependencias
+El archivo crea `.venv` si hace falta, instala las dependencias de `requirements.txt` dentro de ese entorno, comprueba el modelo y la red, e inicia el servidor en CPU. Abre el navegador cuando el servidor ya responde.
 
-Abre CMD en la carpeta que contiene `app.py` y `requirements.txt`.
+Para volver a usar Navia, ejecuta otra vez `Navia.bat`. Reutiliza el entorno y las dependencias instaladas. Si cambian las versiones requeridas o falta alguna biblioteca, actualiza la instalación automáticamente. Mantenga la ventana abierta mientras utilizas la aplicación. Para detenerla, pulsa Ctrl + C.
 
-Crea un entorno virtual:
+La dirección habitual es http://127.0.0.1:8000. Si ya hay una instancia de Navia en ese puerto, abre la existente, si el puerto pertenece a otro programa, intenta utilizar otro disponible y muestra su dirección.
 
-```cmd
-python -m venv .venv
-```
-
-Activa el entorno:
-
-```cmd
-.venv\Scripts\activate
-```
-
-Instala las dependencias:
-
-```cmd
-python -m pip install -r requirements.txt
-```
-
-### 3. Ejecutar Navia
-
-Con el entorno activado, ejecuta:
-
-```cmd
-python app.py
-```
-
-Abre http://127.0.0.1:8000 en tu navegador.
-
-Mantén la terminal abierta mientras utilizas Navia. Para detenerlo pulsa Ctrl + C
-
-### Volver a ejecutar Navia
-
-Cada vez que abras una terminal nueva, entra en la carpeta de Navia y activa primero el entorno virtual:
-
-```cmd
-.venv\Scripts\activate
-```
-
-Después, inicia la aplicación:
-
-```cmd
-python app.py
-```
-
-No necesitas crear el entorno ni instalar las dependencias otra vez
+**La primera consulta puede tardar más por la carga del modelo y la compilación para CPU. Si el navegador no se abre, utiliza la dirección que aparece en la ventana.**
 
 ##  Uso
 
@@ -130,25 +92,25 @@ No necesitas crear el entorno ni instalar las dependencias otra vez
 5. Selecciona una de las opciones para destacar su recorrido y consultar su tiempo estimado
 6. Cambia entre Normal y Tráfico para explorar las condiciones previstas
 
-La vista de tráfico muestra las condiciones de la hora seleccionada. Los tiempos de las rutas consideran las condiciones a la hora de paso por cada tramo.
+La vista de tráfico muestra las condiciones de la hora seleccionada. Los tiempos de las rutas consideran las condiciones a la hora de paso por cada tramo
 
 ##  Consideraciones
 
-> Las predicciones se basan en datos sintéticos, apoyados en referencias parciales de tráfico habitual. No representan tráfico en tiempo real y pueden diferir de las condiciones reales
+> Las predicciones se basan en datos sintéticos apoyados en referencias parciales de tráfico habitual. No representan tráfico en tiempo real y pueden diferir de las condiciones reales
 
 - La primera consulta puede tardar más mientras se carga el modelo y se prepara el cálculo en CPU
 - El mapa base necesita Internet; la búsqueda de calles, las predicciones y las rutas se calculan con datos locales
 - Los tiempos de viaje son estimaciones. Accidentes, obras, clima y otros eventos pueden modificar las condiciones reales
 - Navia está en fase beta
 
-##  Licencias y atribución
-
-- Navia: [Apache 2.0](LICENSE)
-- Datos viales · © OpenStreetMap contributors: [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/) · [Atribución](data/README.md)
-- Leaflet: [Licencia](frontend/vendor/leaflet/LICENSE)
-
 ## Miembros del equipo
 
 - Abdiel Alfredo Hernández Vásquez - SMSS077825
 - Ruth Isabel Amaya Berríos - SMSS061025
 - William Daniel Roque Díaz - SMSS025025
+
+##  Licencias y atribución
+
+- Navia: [Apache 2.0](LICENSE)
+- Datos viales · © OpenStreetMap contributors: [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/) · [Atribución](data/README.md)
+- Leaflet: [Licencia](frontend/vendor/leaflet/LICENSE)
