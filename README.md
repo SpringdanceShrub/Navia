@@ -12,9 +12,9 @@
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-apache_2.0-3da638.svg?style=flat" alt="Licencia Apache 2.0"></a>
     <img src="https://img.shields.io/badge/python-3.12+-3776AB.svg" alt="Python 3.12">
     <img src="https://img.shields.io/badge/platform-windows-0078D4.svg" alt="Windows">
-    <img src="https://img.shields.io/badge/model-verdict_3-d99a49.svg?style=flat" alt="Verdict 3">
+    <img src="https://img.shields.io/badge/model-verdict_3-d99a49.svg?style=flat" alt="verdict 4">
   </p>
-  <p><strong>v0.1.1 · Many-Flowered Rose</strong></p>
+  <p><strong>v0.1.5 · Helm of the Radiant Rose</strong></p>
 
 </div>
 
@@ -45,21 +45,22 @@ Las calles locales aparecen al acercarse al mapa para mantener una vista más cl
 - Selección de fecha y hora, con controles de horas, minutos y AM/PM
 - Búsqueda local de calles y selección de inicio y destino sobre el mapa
 
-##  Impulsado por Verdict 3
+##  Impulsado por Verdict 4
 
-### 46,1 millones de parámetros espaciotemporales
+### 184,3 millones de parámetros espaciotemporales
 
 Parámetros estadísticos que representan el tráfico mediante combinaciones de:
 
 - 274.229 tramos de carretera
 - 7 días de la semana
-- 24 horas del día
+- 96 franjas diarias de 15 minutos
 
-Navia incluye el modelo y la red vial preparada necesarios para ejecutar las predicciones y calcular las rutas
+Cada combinación también tiene una probabilidad de tráfico moderado y otra de atasco.
 
 ## Información extra
 
 Puede obtener más información técnica sobre el proyecto consultando nuestro PDF informativo haciendo clic <a href="docs/Info.pdf">aquí</a>
+Puede ver los avances del proyecto consultando nuestro PDF informativo haciendo clic <a href="docs/Info1.5.pdf">aquí</a>
 
 ##  Instalación
 
@@ -74,8 +75,6 @@ Puede obtener más información técnica sobre el proyecto consultando nuestro P
 1. Descargar el paquete completo desde [Releases](https://github.com/SpringdanceShrub/Navia/releases) y extraer el ZIP
 2. Hacer dobre click sobre **`Navia.bat`**
 3. Espera mientras prepara el entorno y abre Navia en el navegador
-
-El archivo crea `.venv` si hace falta, instala las dependencias de `requirements.txt` dentro de ese entorno, comprueba el modelo y la red, e inicia el servidor en CPU. Abre el navegador cuando el servidor ya responde.
 
 Para volver a usar Navia, ejecuta otra vez `Navia.bat`. Reutiliza el entorno y las dependencias instaladas. Si cambian las versiones requeridas o falta alguna biblioteca, actualiza la instalación automáticamente. Mantenga la ventana abierta mientras utilizas la aplicación. Para detenerla, pulsa Ctrl + C.
 
@@ -101,7 +100,7 @@ La vista de tráfico muestra las condiciones de la hora seleccionada. Los tiempo
 - La primera consulta puede tardar más mientras se carga el modelo y se prepara el cálculo en CPU
 - El mapa base necesita Internet; la búsqueda de calles, las predicciones y las rutas se calculan con datos locales
 - Los tiempos de viaje son estimaciones. Accidentes, obras, clima y otros eventos pueden modificar las condiciones reales
-- Navia está en fase beta
+- Navia está en fase beta y puede tener errores
 
 ## Miembros del equipo
 

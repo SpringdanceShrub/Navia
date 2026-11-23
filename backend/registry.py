@@ -3,7 +3,7 @@ from threading import RLock
 import json
 import numpy as np
 from .verdict import ConditionalTrafficModel
-from .verdict.hashing import sha256
+from .verdict.quarterly import QUARTER_SCHEMA, QuarterHourTrafficModel, quarter_artifacts
 
 class ModelRegistry:
     """Scan on demand; keep only the last requested model in CPU memory."""
@@ -15,16 +15,28 @@ class ModelRegistry:
         for directory in sorted(self.folder.iterdir(),key=lambda p:p.name.casefold()):
             if not directory.is_dir() or directory.is_symlink():continue
             try:
-                manifest=json.loads((directory/'model_manifest.json').read_text(encoding='utf8'))
-                normal=manifest.get('normal_model_path','base/traffic_model.npz')
-                required={normal,'conditional_residual.npz','road_context.npz'}
-                if not required<=manifest['artifact_sha256'].keys() or (directory/'INCOMPLETE').exists():continue
-                for name in manifest['artifact_sha256']:
+                manifest_path=directory/'model_manifest.json'
+                manifest=json.loads(manifest_path.read_text(encoding='utf8'))
+                if not isinstance(manifest,dict) or (directory/'INCOMPLETE').exists():continue
+                schema=manifest.get('schema')
+                if schema==QUARTER_SCHEMA:
+                    required=set(quarter_artifacts(manifest))
+                else:
+                    normal=manifest.get('normal_model_path','base/traffic_model.npz')
+                    required={normal,'conditional_residual.npz','road_context.npz'}
+                hashes=manifest.get('artifact_sha256')
+                if not isinstance(hashes,dict) or not required<=hashes.keys():continue
+                resolved=directory.resolve()
+                artifacts=[]
+                for name in sorted(hashes):
                     path=(directory/name).resolve()
-                    if not path.is_relative_to(directory.resolve()) or not path.is_file():raise ValueError('Invalid model path')
+                    if Path(name).is_absolute() or not path.is_relative_to(resolved) or not path.is_file():
+                        raise ValueError('Invalid model path')
+                    artifacts.append(path.stat())
+                stats=[manifest_path.stat(),*artifacts]
                 result.append({'id':directory.name,'name':str(manifest.get('name',directory.name))[:80],
-                    'version':str(manifest.get('version','')),'icon':'/frontend/assets/Verdict.svg',
-                    'signature':[(p.stat().st_mtime_ns,p.stat().st_size) for p in [directory/'model_manifest.json']+[directory/x for x in sorted(required)]]})
+                    'version':str(manifest.get('version','')),'icon':'/frontend/assets/Verdict.svg','schema':schema,
+                    'signature':[(stat.st_mtime_ns,stat.st_size) for stat in stats]})
             except (OSError,KeyError,ValueError,TypeError):continue
         return result
 
@@ -37,12 +49,15 @@ class ModelRegistry:
             if entry is None:raise ValueError('El modelo seleccionado ya no está disponible.')
             signature=(model_id,repr(entry['signature']))
             if self.signature!=signature:
-                try:model=ConditionalTrafficModel(self.folder/model_id)
-                except (OSError,ValueError,EOFError) as error:
+                native=entry['schema']==QUARTER_SCHEMA
+                loader=QuarterHourTrafficModel if native else ConditionalTrafficModel
+                try:model=loader(self.folder/model_id)
+                except (OSError,ValueError,EOFError,KeyError,TypeError) as error:
                     raise ValueError('El modelo está incompleto o sus archivos cambiaron. Termina de copiarlo; si clonaste el proyecto, ejecuta git lfs pull.') from error
                 if not np.array_equal(model.ids,self.network.segment_ids) or not np.allclose(model.length,self.network.segment_length,rtol=1e-5,atol=.05):
                     raise ValueError('El modelo utiliza otra red vial; hay que preparar su red antes de seleccionarlo.')
-                if not np.isfinite(model.free_speed).all() or not np.isfinite(model.free_time).all() or np.any(model.log_delay<0):
+                if (not np.isfinite(model.free_speed).all() or not np.isfinite(model.free_time).all()
+                        or (not native and np.any(model.log_delay<0))):
                     raise ValueError('El modelo contiene velocidades o demoras fuera del formato permitido.')
                 if not np.allclose(model.free_speed*model.free_time,model.length*3.6,rtol=3e-5,atol=.001):
                     raise ValueError('Las unidades de velocidad, longitud y tiempo del modelo no son compatibles.')

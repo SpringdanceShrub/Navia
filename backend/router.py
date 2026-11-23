@@ -24,13 +24,14 @@ class Router:
 
     def search(self,start,end,model,speeds,start_seconds,blocked,bound=math.inf):
         n=self.n;initial,initial_lengths,goals,goal_lengths=self.endpoints(start,end)
+        slot_seconds=getattr(model,'minutes_per_slot',60)*60
         direct=None;best_bound=bound
         for i,edge in enumerate(initial):
             for j,goal in enumerate(goals):
                 if edge!=goal or blocked[n.edge_part[edge]]:continue
                 offset=float(n.part_length[n.edge_part[edge]])-initial_lengths[i]
                 if goal_lengths[j]+1e-7>=offset:
-                    length=max(0.,goal_lengths[j]-offset);seconds=float(edge_time(length,start_seconds,int(n.part_sid[n.edge_part[edge]]),speeds))
+                    length=max(0.,goal_lengths[j]-offset);seconds=float(edge_time(length,start_seconds,int(n.part_sid[n.edge_part[edge]]),speeds,slot_seconds))
                     if seconds<best_bound:best_bound=seconds;direct=(int(edge),float(offset),float(goal_lengths[j]))
         scale=float(n.manifest['heuristic_metric_scale']);goal_xy=end['xy'].copy()
         if end['node']>=0:goal_xy=np.array(n.node_xy[end['node']])
@@ -40,7 +41,7 @@ class Router:
                 if straight>1e-6:scale=min(scale,float(length/straight)*.999)
         result=earliest(n.state_edge,n.state_first,n.state_next,n.edge_to,n.edge_part,n.part_sid,n.part_length,n.node_xy,
             initial,initial_lengths,goals,goal_lengths,int(end['node']),goal_xy,speeds,start_seconds,blocked,
-            scale/(float(model.free_speed.max())/3.6),best_bound)
+            scale/(float(model.free_speed.max())/3.6),best_bound,slot_seconds=slot_seconds)
         previous,terminal,terminal_edge,seconds,visits,finished=result
         if not finished:raise NoRouteError('La búsqueda superó el límite de cálculo. Prueba otros puntos cercanos.')
         if terminal<0:
@@ -65,17 +66,22 @@ class Router:
 
     def evaluate(self,path,model,speeds,start_seconds,departure):
         n=self.n;elapsed=0.;distance=0.;free_seconds=0.;coordinates=[];pieces=[];physical={};traffic_distance=np.zeros(3)
+        slot_seconds=getattr(model,'minutes_per_slot',60)*60
+        level_at=getattr(model,'traffic_level_for_row',None)
         for edge,left,right in path['parts']:
             part=int(n.edge_part[edge]);row=int(n.part_sid[part]);length=right-left
-            at=start_seconds+elapsed;duration=float(edge_time(length,at,row,speeds))
+            at=start_seconds+elapsed;duration=float(edge_time(length,at,row,speeds,slot_seconds))
             entry=departure+timedelta(seconds=elapsed);elapsed+=duration;exit=departure+timedelta(seconds=elapsed)
             fraction_start=left/n.part_length[part];fraction_end=right/n.part_length[part]
             geo=n.clipped_geometry(part,bool(n.edge_reverse[edge]),float(fraction_start),float(fraction_end))
             if coordinates and coordinates[-1]==geo[0]:coordinates.extend(geo[1:])
             else:coordinates.extend(geo)
-            speed=float(speeds[int(at//3600),row]*3.6)
+            speed=float(speeds[int(at//slot_seconds),row]*3.6)
             factor=float(model.free_speed[row]/speed) if speed>0 else math.inf
-            level=int(factor>=model.thresholds[0])+int(factor>=model.thresholds[1])
+            if level_at is None or speed<=0:
+                level=int(factor>=model.thresholds[0])+int(factor>=model.thresholds[1])
+            else:
+                level=int(level_at(row,entry,factor))
             physical[int(n.segment_ids[row])]=physical.get(int(n.segment_ids[row]),0.)+length
             traffic_distance[level]+=length;free_seconds+=length*3.6/float(model.free_speed[row]);distance+=length
             pieces.append({'segment_id':int(n.segment_ids[row]),'name':n.names[row] or 'Vía sin nombre',
@@ -101,17 +107,24 @@ class Router:
     def routes(self,start_coordinates,end_coordinates,departure,model,signature,limit=3):
         began=time.perf_counter();n=self.n;start=n.snap(start_coordinates);end=n.snap(end_coordinates)
         if np.linalg.norm(start['xy']-end['xy'])<2:raise ValueError('Selecciona un inicio y un destino distintos.')
-        speeds,start_seconds=self.traffic.profile(model,signature,departure)
+        minutes=getattr(model,'minutes_per_slot',60)
+
+        hours=48*minutes//60
+        speeds,start_seconds=self.traffic.profile(model,signature,departure,hours=hours)
         blocked=n.part_destination.copy()
         access_ways=n.part_way[[start['part'],end['part']]]
         blocked[np.isin(n.part_way,access_ways)]=False
         best_path=self.search(start,end,model,speeds,start_seconds,blocked)
+        if hours<48 and (best_path is None or (
+                limit>1 and best_path['seconds']+min(900,best_path['seconds']*.30)>=hours*3600-start_seconds)):
+            speeds,start_seconds=self.traffic.profile(model,signature,departure,hours=48)
+            if best_path is None:
+                best_path=self.search(start,end,model,speeds,start_seconds,blocked)
         if best_path is None:raise NoRouteError('No hay una conexión vehicular disponible entre estos puntos. Prueba una vía cercana.')
         best=self.evaluate(best_path,model,speeds,start_seconds,departure);selected=[best];candidates=[];seen={tuple(e for e,_,_ in best_path['parts'])}
         maximum=best['travel_time_s']+min(900,best['travel_time_s']*.30)
         line=best['_line'];mid=(n.part_bbox[:,:2]+n.part_bbox[:,2:])/2
-        # Block separate geographic patches, rather than perturbing a time weight.
-        # All candidate searches still use physical arrival time and legal turns.
+
         if limit>1 and line.length>500:
             for fraction,radius_scale in ((.5,1),(.3,1),(.7,1),(.5,.5),(.2,.6),(.8,.6),(.4,1.5),(.6,1.5)):
                 point=line.interpolate(fraction,normalized=True)

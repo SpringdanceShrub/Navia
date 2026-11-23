@@ -3,26 +3,27 @@ import numpy as np
 from numba import njit
 
 @njit(cache=True,nogil=True)
-def edge_time(length,at,segment,speeds):
+def edge_time(length,at,segment,speeds,slot_seconds=3600):
     start=at;remaining=length
     while remaining>1e-7:
-        slot=int(at//3600)
+        slot=int(at//slot_seconds)
         if slot<0 or slot>=len(speeds):return math.inf
-        seconds=(slot+1)*3600-at;rate=speeds[slot,segment]
+        boundary=(slot+1)*slot_seconds
+        seconds=boundary-at;rate=speeds[slot,segment]
         if rate>0 and remaining<=rate*seconds:return at-start+remaining/rate
-        remaining-=rate*seconds;at+=seconds
+        remaining-=rate*seconds;at=boundary
     return at-start
 
 @njit(cache=True,nogil=True)
 def earliest(state_edge,state_first,state_next,edge_to,edge_part,part_sid,part_length,node_xy,
              initial_edges,initial_lengths,goal_edges,goal_lengths,goal_node,goal_xy,
-             speeds,start_seconds,blocked,heuristic_rate,bound,max_visits=2000000):
+             speeds,start_seconds,blocked,heuristic_rate,bound,max_visits=2000000,slot_seconds=3600):
     distance=np.full(len(state_edge),np.inf);previous=np.full(len(state_edge),-2,np.int32)
     queue=[(0.,0.,0)];queue.pop();best=bound;terminal=-1;terminal_edge=-2;visits=0
     for j in range(len(initial_edges)):
         edge=initial_edges[j];part=edge_part[edge]
         if blocked[part]:continue
-        cost=edge_time(initial_lengths[j],start_seconds,part_sid[part],speeds)
+        cost=edge_time(initial_lengths[j],start_seconds,part_sid[part],speeds,slot_seconds)
         if cost<distance[edge]:
             distance[edge]=cost;previous[edge]=-1;v=edge_to[edge]
             h=math.hypot(node_xy[v,0]-goal_xy[0],node_xy[v,1]-goal_xy[1])*heuristic_rate
@@ -41,9 +42,9 @@ def earliest(state_edge,state_first,state_next,edge_to,edge_part,part_sid,part_l
             segment=part_sid[part]
             for j in range(len(goal_edges)):
                 if other==goal_edges[j]:
-                    ending=cost+edge_time(goal_lengths[j],start_seconds+cost,segment,speeds)
+                    ending=cost+edge_time(goal_lengths[j],start_seconds+cost,segment,speeds,slot_seconds)
                     if ending<best:best=ending;terminal=state;terminal_edge=other
-            value=cost+edge_time(part_length[part],start_seconds+cost,segment,speeds)
+            value=cost+edge_time(part_length[part],start_seconds+cost,segment,speeds,slot_seconds)
             if value+1e-9<distance[target]:
                 distance[target]=value;previous[target]=state;v=edge_to[other]
                 h=math.hypot(node_xy[v,0]-goal_xy[0],node_xy[v,1]-goal_xy[1])*heuristic_rate

@@ -18,18 +18,23 @@ class TrafficService:
     def __init__(self,network):self.network=network;self.cache=OrderedDict();self.lock=RLock()
 
     def profile(self,model,signature,departure,hours=48):
-        origin=departure.replace(minute=0,second=0,microsecond=0);values=[]
+        minutes=getattr(model,'minutes_per_slot',60)
+        origin=departure.replace(minute=departure.minute//minutes*minutes,second=0,microsecond=0)
+        speeds=np.empty((hours*60//minutes,len(model.ids)),dtype=np.float32)
+        slot_speeds=getattr(model,'slot_speeds',None)
         with self.lock:
-            for hour in range(hours):
-                at=origin+timedelta(hours=hour);key=(signature,at.isoformat())
+            for slot in range(len(speeds)):
+                at=origin+timedelta(minutes=slot*minutes);key=(signature,at.isoformat())
                 if key not in self.cache:
-                    if holiday_context(at.date())['holiday']=='none':
+                    if slot_speeds is not None:
+                        speed=slot_speeds(at)
+                    elif holiday_context(at.date())['holiday']=='none':
                         speed=(model.free_speed/np.exp(model.log_delay[at.weekday(),at.hour])/3.6).astype(np.float32)
                     else:speed=(model.predict_at(model.ids,at)['speed_kmh']/3.6).astype(np.float32)
                     self.cache[key]=speed
-                self.cache.move_to_end(key);values.append(self.cache[key])
+                self.cache.move_to_end(key);speeds[slot]=self.cache[key]
                 while len(self.cache)>48:self.cache.popitem(last=False)
-        return np.stack(values),float((departure-origin).total_seconds())
+        return speeds,float((departure-origin).total_seconds())
 
     def view(self,model,bbox,zoom,at):
         if len(bbox)!=4 or not np.isfinite(bbox).all():raise ValueError('Límites del mapa inválidos.')

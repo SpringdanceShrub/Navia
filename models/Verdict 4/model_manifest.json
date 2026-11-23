@@ -1,0 +1,43 @@
+{
+  "name": "Verdict 4 Astra",
+  "version": "4.0.0",
+  "schema": "verdict41-quarter-model-v1",
+  "minutes_per_slot": 15,
+  "slots_per_day": 96,
+  "time_zone": "America/El_Salvador",
+  "segments": 274229,
+  "weekday_order": "Monday=0 through Sunday=6",
+  "weekly_shape": [
+    7,
+    96,
+    274229
+  ],
+  "risk_scale": 65535,
+  "class_order": [
+    "NORMAL",
+    "SLOW",
+    "TRAFFIC_JAM"
+  ],
+  "typical_class_thresholds": [
+    1.3,
+    2.0
+  ],
+  "weekly_fields": {
+    "travel_time_s": "weekly/travel_time_s.npy",
+    "typical_factor": "weekly/typical_factor.npy",
+    "slow_q": "weekly/slow_q.npy",
+    "jam_q": "weekly/jam_q.npy"
+  },
+  "time_contract": "effective_link_time_in_seconds_with_control_wait_once",
+  "condition_contract": "apply_log_residual_to_moving_time_factor_only_then_add_control_wait",
+  "dataset_manifest_sha256": "4b16db077d985d63ed2b08ada9ac3a0e6adc3b4cfcdd908214f08dbd69d97585",
+  "artifact_sha256": {
+    "conditional_residual.npz": "4707458ee171c8870a5eeaa5514e22ac5f8a9fe4ecf32d61cd9722ff3f0dae98",
+    "road_context.npz": "7de777fcc372e3d55cba16811548afaa7fa2c74da61c47a4241e98a9e04f5275",
+    "road_times.npz": "4f2396581403c59e071c1609700e21f355d3b6bba7c8edff98286d40ec446858",
+      "weekly/jam_q.npy": "f17aae49aa5d731ea5eed90c2f80ad807e2c4ded8e2386856ab310aa5bdf9192",
+    "weekly/slow_q.npy": "43e31eaea6ea3334aa74fa9f566ce302116d2965a32d2c55445d1fe1ef0e6317",
+    "weekly/travel_time_s.npy": "e8b564b065de8926220ab36010503c97d3581afc3f990cfe0b96b711c006eec4",
+    "weekly/typical_factor.npy": "a9f49ff846818642a5b5a6fdf75aa42a5401877623bfaa3bf905d1d1a32c0beb"
+  }
+}
