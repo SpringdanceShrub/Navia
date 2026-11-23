@@ -28,11 +28,11 @@ La ruta principal prioriza el tiempo total de llegada: puede atravesar tráfico 
 
 ##  Planifiación de rutas
 
-![Mapa de rutas](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture1.jpg)
+![Mapa de rutas](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture1.png)
 
 ##  Mapa de tráfico estimado
 
-![Mapa de tráfico estimado](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture2.jpg)
+![Mapa de tráfico estimado](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture2.png)
 
 
 La vista tráfico permite explorar las condiciones estimadas para la fecha y hora seleccionadas:
