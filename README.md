@@ -12,7 +12,7 @@
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-apache_2.0-3da638.svg?style=flat" alt="Licencia Apache 2.0"></a>
     <img src="https://img.shields.io/badge/python-3.12+-3776AB.svg" alt="Python 3.12">
     <img src="https://img.shields.io/badge/platform-windows-0078D4.svg" alt="Windows">
-    <img src="https://img.shields.io/badge/model-verdict_3-d99a49.svg?style=flat" alt="verdict 4 Astra">
+    <img src="https://img.shields.io/badge/model-verdict_4_astra-d99a49.svg?style=flat" alt="verdict 4 Astra">
   </p>
   <p><strong>v0.1.5 · Helm of the Radiant Rose</strong></p>
 
