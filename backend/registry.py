@@ -6,7 +6,6 @@ from .verdict import ConditionalTrafficModel
 from .verdict.quarterly import QUARTER_SCHEMA, QuarterHourTrafficModel, quarter_artifacts
 
 class ModelRegistry:
-    """Scan on demand; keep only the last requested model in CPU memory."""
     def __init__(self,folder,network):
         self.folder=Path(folder);self.network=network;self.lock=RLock();self.loaded=None;self.signature=None
 

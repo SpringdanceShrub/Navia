@@ -8,6 +8,7 @@ from .network import Network
 from .registry import ModelRegistry
 from .traffic import TrafficService,local_datetime
 from .router import Router,NoRouteError
+from .country import validate_route_point
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -76,6 +77,7 @@ def create_app(root=ROOT):
         if not isinstance(payload,dict):raise ValueError('La solicitud de rutas no es válida.')
         start=payload.get('start');end=payload.get('end')
         if start is None or end is None:raise ValueError('Selecciona el inicio y el destino.')
+        start=validate_route_point(start);end=validate_route_point(end)
         s=services.ready()
         if not s.route_lock.acquire(blocking=False):return jsonify(error='Ya hay un cálculo en curso. Espera un momento y vuelve a intentarlo.'),409
         try:

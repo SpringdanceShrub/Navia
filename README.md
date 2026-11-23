@@ -12,7 +12,7 @@
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-apache_2.0-3da638.svg?style=flat" alt="Licencia Apache 2.0"></a>
     <img src="https://img.shields.io/badge/python-3.12+-3776AB.svg" alt="Python 3.12">
     <img src="https://img.shields.io/badge/platform-windows-0078D4.svg" alt="Windows">
-    <img src="https://img.shields.io/badge/model-verdict_3-d99a49.svg?style=flat" alt="verdict 4">
+    <img src="https://img.shields.io/badge/model-verdict_3-d99a49.svg?style=flat" alt="verdict 4 Astra">
   </p>
   <p><strong>v0.1.5 · Helm of the Radiant Rose</strong></p>
 
@@ -26,9 +26,14 @@ Las carreteras se evalúan según la hora prevista de paso por cada tramo. Si un
 
 La ruta principal prioriza el tiempo total de llegada: puede atravesar tráfico si hacerlo resulta más rápido que evitarlo
 
-##  Vista de tráfico
+##  Planifiación de rutas
 
-![Mapa de tráfico estimado](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture1.jpg)
+![Mapa de rutas](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture1.jpg)
+
+##  Mapa de tráfico estimado
+
+![Mapa de tráfico estimado](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture2.jpg)
+
 
 La vista tráfico permite explorar las condiciones estimadas para la fecha y hora seleccionadas:
 
@@ -45,7 +50,7 @@ Las calles locales aparecen al acercarse al mapa para mantener una vista más cl
 - Selección de fecha y hora, con controles de horas, minutos y AM/PM
 - Búsqueda local de calles y selección de inicio y destino sobre el mapa
 
-##  Impulsado por Verdict 4
+##  Impulsado por Verdict 4 Astra
 
 ### 184,3 millones de parámetros espaciotemporales
 

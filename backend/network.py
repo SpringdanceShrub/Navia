@@ -4,6 +4,7 @@ import numpy as np
 import pyarrow.parquet as pq
 import shapely
 from pyproj import Transformer
+from .country import validate_route_point
 
 PROJECT=Transformer.from_crs(4326,32616,always_xy=True)
 INVERSE=Transformer.from_crs(32616,4326,always_xy=True)
@@ -32,10 +33,7 @@ class Network:
         return shapely.LineString(self.geometry[self.geometry_first[part]:self.geometry_first[part+1]])
 
     def snap(self,coordinates):
-        if not isinstance(coordinates,(list,tuple)) or len(coordinates)!=2:raise ValueError('Coordenadas de inicio y fin inválidas.')
-        try:lon,lat=map(float,coordinates)
-        except (ValueError,TypeError):raise ValueError('Coordenadas de inicio y fin inválidas.') from None
-        if not np.isfinite([lon,lat]).all() or not (-90.3<=lon<=-87.4 and 12.9<=lat<=14.7):raise ValueError('El punto debe estar en El Salvador.')
+        lon,lat=validate_route_point(coordinates)
         x,y=PROJECT.transform(lon,lat);b=self.part_bbox
         candidates=[]
         for radius in (40,150,500):

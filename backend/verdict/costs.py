@@ -36,12 +36,7 @@ def integrate_distance(length_m, departure, speed_at_hour, horizon_hours=168):
 
 def traverse_pieces(piece_ids, piece_lengths, departure, speed_at_time, reverse=False,
                     start_offset_m=0., end_offset_m=None, horizon_hours=168):
-    """Traverse an ordered interval of a source road using actual arrival times.
 
-    Offsets are always measured in the source's forward order; ``reverse`` reverses
-    traversal within that interval. Source order is not a legal routing graph or
-    proof that reverse travel is allowed. The caller supplies graph legality.
-    """
     ids = np.asarray(piece_ids)
     lengths = np.asarray(piece_lengths, dtype=float)
     if ids.ndim != 1 or lengths.shape != ids.shape or not np.isfinite(lengths).all() or (lengths <= 0).any():
