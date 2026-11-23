@@ -45,10 +45,17 @@ Las calles locales aparecen al acercarse al mapa para mantener una vista más cl
 
 ##  Características
 
-- Hasta tres opciones de ruta con diversidad geográfica, cuando existen alternativas suficientemente eficientes
-- Cálculo de tiempos con tráfico, considerando las velocidades previstas durante el recorrido
-- Selección de fecha y hora, con controles de horas, minutos y AM/PM
-- Búsqueda local de calles y selección de inicio y destino sobre el mapa
+- Hasta tres rutas con recorridos distintos, Navia muestra alternativas cuando encuentra opciones suficientemente diferentes y con tiempos competitivos.
+- Estimación de viaje por tramo, Verdict 4 Astra usa franjas de 15 minutos para estimar el tráfico a la hora prevista de paso por cada tramo e incorpora las esperas en cruces y semáforos.
+- Planificación por hora y día, después del primer cálculo, Navia actualiza las rutas automáticamente si cambias la salida.
+- Búsqueda de lugares con OpenStreetMap, Busca una ubicación y úsala directamente como inicio o destino.
+- Mapa de tráfico por tramos. En modo Tráfico, los colores de la ruta indican la congestión estimada. En modo Normal, cada ruta mantiene un color sólido.
+- Duración visible sobre el mapa, La ruta seleccionada destaca con un borde blanco y muestra su tiempo estimado en una burbuja.
+- Cálculo local en CPU, la estimación del tráfico y el cálculo de rutas se ejecutan localmente en tu equipo.
+
+---
+
+![Vedict 4 Astra](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Release%20v0.1.5/Vedict%204%20Astra.png)
 
 ##  Impulsado por Verdict 4 Astra
 
@@ -65,6 +72,7 @@ Cada combinación también tiene una probabilidad de tráfico moderado y otra de
 ## Información extra
 
 Puede obtener más información técnica sobre el proyecto consultando nuestro PDF informativo haciendo clic <a href="docs/Info.pdf">aquí</a>
+<br>
 Puede ver los avances del proyecto consultando nuestro PDF informativo haciendo clic <a href="docs/Info1.5.pdf">aquí</a>
 
 ##  Instalación
