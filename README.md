@@ -83,6 +83,31 @@ Puede ver los avances del proyecto consultando nuestro PDF informativo haciendo 
 - Python 3.12+
 - Conexión a Internet para instalar las dependencias y cargar el mapa base
 
+<details>
+<summary><strong>Librerías y versiones</strong></summary>
+
+Las dependencias de Python se instalan automáticamente al ejecutar `Navia.bat`.
+
+| Librería | Versión |
+|---|---|
+| Flask | 3.1.3 |
+| NumPy | 2.5.4 |
+| Numba | 0.68.0 |
+| Shapely | 2.2.0 |
+| PyArrow | 26.0.0 |
+| PyProj | 3.8.0 |
+| RapidFuzz | 3.14.6 |
+| Blinker | 1.9.0 |
+| Certifi | 2026.10.19 |
+| Click | 8.5.0 |
+| ItsDangerous | 2.2.0 |
+| Jinja2 | 3.1.6 |
+| LLVMLite | 0.50.0 |
+| MarkupSafe | 3.0.4 |
+| Werkzeug | 3.1.9 |
+
+</details>
+
 ### Descargar e instalar Navia
 
 1. Descargar el paquete completo desde [Releases](https://github.com/SpringdanceShrub/Navia/releases) y extraer el ZIP
