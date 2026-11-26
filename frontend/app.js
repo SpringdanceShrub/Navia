@@ -10,7 +10,7 @@ map.createPane('trafficPane').style.zIndex=410;
 map.createPane('routePane').style.zIndex=450;
 const routeRenderer=L.canvas({pane:'routePane',padding:.3});
 const trafficRenderer=L.canvas({pane:'trafficPane',padding:.3});
-const routeTrafficColors=['#c1a6f0','#9460ce','#542184'];
+const routeTrafficColors=['#9470cf','#7243b4','#4d1c79'];
 const routeSolidColors=['#a88be8','#d1a8db','#8e9ed9'];
 const ids=['searchInput','searchResults','clearSearch','searchSubmit','startInput','endInput','pickStart','pickEnd','selectionHint','departureLabel','departureHour','departureMinute','departurePeriod','calculateBtn','routesList','routeCount','routeLegend','resetBtn','statusPill','statusText','modelSelect','modelIcon','normalMode','trafficMode','trafficLegend','trafficTime','panelToggle','plannerBody'];
 const els=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
@@ -22,6 +22,7 @@ let selectedRoute=0,busy=false,models=[],modelFingerprint='',trafficEnabled=fals
 let autoRouteEnabled=false,routeRecalcTimer=null,routeRecalcQueued=false,routeRequestActive=false;
 let routeController=null,routeEpoch=0,trafficController=null,trafficEpoch=0,searchController=null,searchEpoch=0,searchTimer=null,trafficTimer=null;
 let trafficRequestKey=null,trafficLoadedKey=null,trafficMoving=false;
+let demoRunning=false;
 const trafficViewCache=new Map();
 function status(text){els.statusText.textContent=text||'';els.statusPill.classList.toggle('hidden',!text);}
 function escapeHtml(value){return String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');}
@@ -278,13 +279,17 @@ function updateRouteTimeBubble(){
   routeTimeBubble.setLatLng(point).setContent(content);
   if(!map.hasLayer(routeTimeBubble))routeTimeBubble.addTo(map);
 }
+function routeStrokeStyle(active,casing,level){
+  if(casing)return {color:'#fff',weight:active?13:10,opacity:active?1:.65};
+  return {color:trafficEnabled?routeTrafficColors[level]:'#8552c4',
+    weight:active?8:6,opacity:active?1:.55};
+}
 function selectRoute(index){
   selectedRoute=index;
   els.routeLegend.classList.toggle('hidden',!trafficEnabled||!currentRoutes.length);
   routeLayers.forEach((group,i)=>group.eachLayer(line=>{
     const active=i===index,casing=line.options.routeCasing;
-    const color=casing?'#fff':trafficEnabled?routeTrafficColors[line.options.routeTrafficLevel]:routeSolidColors[i%routeSolidColors.length];
-    line.setStyle({color,weight:casing?(active?12:9):(active?7:4.5),opacity:casing?(active?1:.8):(active?1:.7)});
+    line.setStyle(routeStrokeStyle(active,casing,line.options.routeTrafficLevel));
   }));
   routeLayers[index]?.eachLayer(line=>line.bringToFront());
   els.routesList.querySelectorAll('.route-card').forEach((card,i)=>{
@@ -333,13 +338,15 @@ function renderRoutes(data,{fitBounds=true,preferredRoute=0}={}){
   }
   status(`${currentRoutes.length} ${currentRoutes.length===1?'ruta eficiente':'rutas eficientes'}`);
 }
-async function calculateRoutes({automatic=false}={}){
-  if(!startPoint||!endPoint||!els.modelSelect.value||!departure())return;
-  if(routeRequestActive){routeRecalcQueued=true;return;}
+async function calculateRoutes({automatic=false,signal}={}){
+  if(signal?.aborted||!startPoint||!endPoint||!els.modelSelect.value||!departure())return 0;
+  if(routeRequestActive){routeRecalcQueued=true;return 0;}
   clearTimeout(routeRecalcTimer);routeRecalcTimer=null;routeRecalcQueued=false;
   if(!automatic)autoRouteEnabled=true;
   const epoch=++routeEpoch,previousSelection=automatic?selectedRoute:0;
   routeController=new AbortController();routeRequestActive=busy=true;ready();
+  const controller=routeController,abort=()=>controller.abort();
+  signal?.addEventListener('abort',abort,{once:true});
   els.calculateBtn.textContent=automatic?'Actualizando…':'Calculando…';
   status(automatic?'Actualizando rutas…':'Calculando el tráfico durante el viaje…');
   try{
@@ -351,11 +358,14 @@ async function calculateRoutes({automatic=false}={}){
     if(epoch!==routeEpoch)return;
     if(!response.ok)throw new Error(data.error||'No se pudieron calcular las rutas.');
     renderRoutes(data,{fitBounds:!automatic,preferredRoute:previousSelection});
+    return currentRoutes.length;
   }catch(error){
     if(error.name!=='AbortError'&&epoch===routeEpoch){
       clearRoutes();els.routesList.firstElementChild.textContent=error.message;status(error.message);
     }
+    return 0;
   }finally{
+    signal?.removeEventListener('abort',abort);
     routeRequestActive=busy=false;routeController=null;
     els.calculateBtn.textContent='Calcular rutas';ready();
     if(routeRecalcQueued){routeRecalcQueued=false;calculateRoutes({automatic:true});}
@@ -554,3 +564,109 @@ els.resetBtn.addEventListener('click',()=>{
 });
 document.addEventListener('click',event=>{if(!event.target.closest('.search-shell'))els.searchResults.classList.add('hidden');});
 renderDeparture();loadModels();
+
+// Exhibition tour uses the same search markers, routing endpoint, alternatives
+// and time controls as manual planning; it never substitutes saved routes.
+window.naviaDemo={
+  async models(){if(!models.length)await loadModels();return models.map(({id,name})=>({id,name}));},
+  model(id){
+    if(els.modelSelect.value===id)return;
+    els.modelSelect.value=id;invalidateRoutes();clearTraffic();
+    els.modelIcon.src=models.find(model=>model.id===id)?.icon||'/frontend/assets/Verdict.svg';
+    scheduleTraffic();
+  },
+  running(value){demoRunning=value;ready();},
+  begin(){
+    autoRouteEnabled=false;clearTimeout(routeRecalcTimer);routeRecalcQueued=false;
+    removeSearchMarker();startMarker?.remove();endMarker?.remove();
+    startPoint=endPoint=startMarker=endMarker=null;els.startInput.value=els.endInput.value='';
+    invalidateRoutes();clearSelection();setTrafficMode(true);
+    els.plannerBody.hidden=false;els.panelToggle.setAttribute('aria-expanded','true');
+    els.panelToggle.setAttribute('aria-label','Contraer planificador');els.panelToggle.textContent='−';
+    document.querySelector('.panel').scrollTo({top:0,behavior:'smooth'});
+  },
+  cancel(){
+    routeEpoch++;routeController?.abort();clearTimeout(routeRecalcTimer);routeRecalcQueued=false;
+    autoRouteEnabled=Boolean(currentRoutes.length);map.stop();
+    document.querySelectorAll('.demo-focus').forEach(element=>element.classList.remove('demo-focus'));
+  },
+  guide(target){
+    document.querySelectorAll('.demo-focus').forEach(element=>element.classList.remove('demo-focus'));
+    const selectors={search:'.search-shell',place:'.map-action-popup',points:'.field-card',
+      time:'.departure-card',calculate:'#calculateBtn',routes:'.routes-list',modes:'.view-switch',
+      traffic:'#trafficLegend',zoom:'.leaflet-control-zoom',model:'.model-picker',reset:'#resetBtn',panel:'#panelToggle'};
+    const element=target==='marker'?startMarker?.getElement():document.querySelector(selectors[target]||'#demoPanel');
+    element?.classList.add('demo-focus');
+    if(element?.closest('.panel'))element.scrollIntoView({block:'nearest',behavior:'smooth'});
+  },
+  async search(place,signal){
+    searchEpoch++;searchController?.abort();clearTimeout(searchTimer);
+    els.searchInput.value=place.name;els.clearSearch.disabled=false;els.searchSubmit.disabled=false;
+    const abort=()=>{searchEpoch++;searchController?.abort();};
+    signal.addEventListener('abort',abort,{once:true});
+    try{await searchPlace();}finally{signal.removeEventListener('abort',abort);}
+  },
+  show(place){showPlace(place);},
+  actions(){searchMarker?.fire('click');},
+  pointActions(){startMarker?.fire('contextmenu');},
+  removeStart(){removePoint('start');},
+  reset(){els.resetBtn.click();},
+  mode(enabled){setTrafficMode(enabled);},
+  panel(expanded){
+    els.plannerBody.hidden=!expanded;els.panelToggle.setAttribute('aria-expanded',String(expanded));
+    els.panelToggle.setAttribute('aria-label',expanded?'Contraer planificador':'Abrir planificador');
+    els.panelToggle.textContent=expanded?'−':'+';
+  },
+  pointsOverview(){
+    if(startPoint&&endPoint)map.fitBounds(L.latLngBounds(startPoint,endPoint),{
+      paddingTopLeft:[45,150],paddingBottomRight:[window.innerWidth>760?365:35,320],maxZoom:15
+    });
+  },
+  focusStart(){if(startPoint)map.flyTo(startPoint,17,{duration:1});},
+  async moveStart(coordinates,place,signal){
+    if(!startMarker||!coordinates)return;
+    const marker=startMarker,from=marker.getLatLng(),to=L.latLng(coordinates[1],coordinates[0]);
+    marker.fire('dragstart');
+    await new Promise((resolve,reject)=>{
+      let frame;const began=performance.now();
+      const abort=()=>{cancelAnimationFrame(frame);marker.setLatLng(from);reject(new DOMException('Tour detenido','AbortError'));};
+      if(signal.aborted){abort();return;}
+      signal.addEventListener('abort',abort,{once:true});
+      const animate=now=>{
+        const fraction=Math.min(1,(now-began)/1000);
+        marker.setLatLng([from.lat+(to.lat-from.lat)*fraction,from.lng+(to.lng-from.lng)*fraction]);
+        if(fraction<1){frame=requestAnimationFrame(animate);return;}
+        signal.removeEventListener('abort',abort);marker.fire('dragend');
+        els.startInput.value=`Acceso a ${place.name}`;resolve();
+      };
+      frame=requestAnimationFrame(animate);
+    });
+  },
+  mark(kind,place){removeSearchMarker();setPoint(kind,[place.lat,place.lon],place.name);},
+  time(value){
+    autoRouteEnabled=false;setDeparture(value);departureChanged();
+    els.departureHour.closest('.departure-card').scrollIntoView({block:'nearest',behavior:'smooth'});
+  },
+  today(){return localNow().slice(0,10);},
+  async calculate(signal,comparison=false){
+    autoRouteEnabled=false;
+    return await calculateRoutes({automatic:comparison,signal});
+  },
+  alternative(index){
+    if(!currentRoutes[index])return;
+    selectRoute(index);
+    els.routesList.querySelectorAll('.route-card')[index]?.scrollIntoView({block:'nearest',behavior:'smooth'});
+  },
+  overview(){
+    if(!routeLayers.length)return;
+    map.fitBounds(L.featureGroup(routeLayers).getBounds(),{
+      paddingTopLeft:[45,150],paddingBottomRight:[window.innerWidth>760?365:35,
+        Math.min(map.getSize().y*.55,(document.getElementById('demoPanel')?.offsetHeight||300)+40)],maxZoom:15
+    });
+  },
+  focus(){
+    const point=routeMidpoint(currentRoutes[selectedRoute]?.geometry);
+    if(point)map.flyTo(point,Math.min(16,Math.max(14,map.getZoom()+1)),{duration:1.2});
+  },
+  summary(){return currentRoutes[selectedRoute]?duration(currentRoutes[selectedRoute].travel_time_s):'';}
+};
