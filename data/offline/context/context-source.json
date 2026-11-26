@@ -1,0 +1,48 @@
+{
+  "schema": "navia-offline-context-v1",
+  "built_at_utc": "2026-11-26T20:23:08.701268+00:00",
+  "attribution": "Natural Earth · geoBoundaries · OpenStreetMap contributors",
+  "sources": {
+    "countries.geojson": {
+      "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_50m_admin_0_countries.geojson",
+      "sha256": "3e458fc036ad0a66411f2c1e6cac49c5d7bfb81cb1123bc513b22511a2b7fdeb",
+      "provider": "Natural Earth",
+      "source_page": "https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-0-countries-2/",
+      "license": "Public domain",
+      "license_url": "https://www.naturalearthdata.com/about/terms-of-use/",
+      "version": "5.1.2"
+    },
+    "departments.geojson": {
+      "url": "https://www.geoboundaries.org/data/snapshots/1c423398df24ddf6e730b116567d2181c9782778d0459c3f3b76ca2f9f12b6bc/gbOpen/SLV/ADM1/geoBoundaries-SLV-ADM1.geojson",
+      "sha256": "f71016c2f3e36c871d4fc35dedb417ad20ff8f9abee52ca7154f3411aa7e2856",
+      "provider": "geoBoundaries gbOpen / OpenStreetMap",
+      "source_page": "https://www.geoboundaries.org/api/current/gbOpen/SLV/ADM1/",
+      "license": "Creative Commons Attribution-ShareAlike 2.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "boundary_id": "SLV-ADM1-98794003",
+      "boundary_year": 2021,
+      "upstream_source": "https://osm-boundaries.com/"
+    }
+  },
+  "processing": "Natural Earth properties reduced to Spanish names and label anchors; ADM1 geometry retained at six decimal places; department label anchors placed inland. El Salvador department name prefixes removed for concise labels.",
+  "files": {
+    "countries": {
+      "path": "data/offline/context/countries.geojson",
+      "bytes": 2314618,
+      "sha256": "a19717290ef6b2f561941aeeaab8d69dc7a5fb94ce7be0dd035d762df2df4498",
+      "feature_count": 484
+    },
+    "departments": {
+      "path": "data/offline/context/departments.geojson",
+      "bytes": 923002,
+      "sha256": "b195b8b68302a8a446fd27ca3e2d18d82340ad322bca7e543252bc35f9ef2acc",
+      "feature_count": 14
+    },
+    "department-labels": {
+      "path": "data/offline/context/department-labels.geojson",
+      "bytes": 2503,
+      "sha256": "f0446ecf8baed0ef3760d9ff6c3be18f3d92bb30903d223e8d2e5bc33c2e2840",
+      "feature_count": 14
+    }
+  }
+}

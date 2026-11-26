@@ -1,0 +1,27 @@
+{
+  "schema": "navia-offline-places-v1",
+  "source": "https://download.geofabrik.de/central-america/el-salvador-latest-free.shp.zip",
+  "source_sha256": "1945ea40c5edb0f2df5adbbf28c79cb97028684f8841b9876cc432c91ff8bd4a",
+  "built_at": "2026-11-26T20:23:45.343260+00:00",
+  "country": "El Salvador",
+  "license": "ODbL-1.0",
+  "attribution": "OpenStreetMap contributors / Geofabrik",
+  "count": "49228",
+  "skipped_geometry": "2",
+  "layers": {
+    "gis_osm_places_free_1": 2572,
+    "gis_osm_pois_free_1": 6244,
+    "gis_osm_pois_a_free_1": 7737,
+    "gis_osm_transport_free_1": 561,
+    "gis_osm_transport_a_free_1": 70,
+    "gis_osm_natural_free_1": 1179,
+    "gis_osm_natural_a_free_1": 61,
+    "gis_osm_water_a_free_1": 222,
+    "gis_osm_landuse_a_free_1": 2053,
+    "gis_osm_buildings_a_free_1": 7179,
+    "gis_osm_roads_free_1": 21350
+  },
+  "database_sha256": "85bd0715070b7662e4db45c32c42fc3700d4b7c60b2eeb74d0ed7ef72c34e77c",
+  "source_page": "https://download.geofabrik.de/central-america/el-salvador.html",
+  "license_url": "https://www.openstreetmap.org/copyright"
+}

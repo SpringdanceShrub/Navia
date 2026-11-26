@@ -1,0 +1,99 @@
+{
+  "version": 8,
+  "name": "Navia — El Salvador sin conexión",
+  "glyphs": "/frontend/vendor/offline-map/glyphs/{fontstack}/{range}.pbf",
+  "sources": {
+    "offline": {
+      "type": "vector",
+      "tiles": ["/api/offline-map/tiles/{z}/{x}/{y}.pbf"],
+      "minzoom": 0,
+      "maxzoom": 14,
+      "bounds": [-90.50091, 12.03598, -87.58438, 14.45762],
+      "attribution": "© OpenStreetMap contributors · BBBike"
+    },
+    "context-countries": {"type": "geojson", "data": "/api/offline-map/context/countries.geojson", "attribution": "Natural Earth (public domain)"},
+    "context-departments": {"type": "geojson", "data": "/api/offline-map/context/departments.geojson", "attribution": "geoBoundaries / OpenStreetMap · CC BY-SA 2.0"},
+    "context-department-labels": {"type": "geojson", "data": "/api/offline-map/context/department-labels.geojson"}
+  },
+  "layers": [
+    {"id": "background", "type": "background", "paint": {"background-color": "#b5d7e4"}},
+    {"id": "context-land", "type": "fill", "source": "context-countries", "filter": ["==", ["get", "kind"], "land"], "paint": {"fill-color": "#f3f0e7"}},
+    {"id": "country-land", "type": "fill", "source": "context-departments", "paint": {"fill-color": "#f3f0e7"}},
+    {"id": "context-country-borders", "type": "line", "source": "context-countries", "filter": ["==", ["get", "kind"], "land"], "maxzoom": 10, "paint": {"line-color": "#b5acb8", "line-width": 0.8, "line-opacity": 0.6}},
+    {"id": "ocean", "type": "fill", "source": "offline", "source-layer": "ocean", "paint": {"fill-color": "#b5d7e4"}},
+    {
+      "id": "land", "type": "fill", "source": "offline", "source-layer": "land",
+      "paint": {
+        "fill-color": ["match", ["get", "kind"], ["wood", "forest"], "#c6dcb5", ["park", "grass", "recreation_ground", "garden", "village_green", "nature_reserve"], "#d1e3be", ["farmland", "farmyard", "orchard", "vineyard"], "#e5e8ce", ["industrial", "commercial", "retail"], "#e9e3e5", ["residential"], "#e8e5de", "#e2e5d5"],
+        "fill-opacity": 0.85
+      }
+    },
+    {"id": "water", "type": "fill", "source": "offline", "source-layer": "water_polygons", "paint": {"fill-color": "#b5d7e4"}},
+    {"id": "waterways", "type": "line", "source": "offline", "source-layer": "water_lines", "paint": {"line-color": "#a1c9de", "line-width": ["interpolate", ["exponential", 1.4], ["zoom"], 10, 0.5, 14, 1.5, 19, 4]}},
+    {"id": "buildings", "type": "fill", "source": "offline", "source-layer": "buildings", "minzoom": 14, "paint": {"fill-color": "#ddd7cd", "fill-outline-color": "#c9c3b8"}},
+    {"id": "street-areas", "type": "fill", "source": "offline", "source-layer": "street_polygons", "minzoom": 13, "paint": {"fill-color": "#fbfaf5"}},
+    {
+      "id": "road-casing", "type": "line", "source": "offline", "source-layer": "streets",
+      "paint": {"line-color": "#cbc8c2", "line-width": ["interpolate", ["exponential", 1.4], ["zoom"], 7, 1.75, 10, 2.2, 13, 3.4, 16, 7.4, 19, 15.4], "line-opacity": 0.9},
+      "layout": {"line-cap": "round", "line-join": "round"}
+    },
+    {
+      "id": "roads", "type": "line", "source": "offline", "source-layer": "streets",
+      "paint": {"line-color": ["match", ["get", "kind"], ["motorway", "trunk"], "#e4b5a8", ["primary", "secondary"], "#f2d09c", ["tertiary"], "#fff7dc", "#ffffff"], "line-width": ["interpolate", ["exponential", 1.4], ["zoom"], 7, 0.35, 10, 0.8, 13, 2, 16, 6, 19, 14]},
+      "layout": {"line-cap": "round", "line-join": "round"}
+    },
+    {"id": "rail", "type": "line", "source": "offline", "source-layer": "streets", "minzoom": 12, "filter": ["==", ["get", "rail"], true], "paint": {"line-color": "#b5b2ad", "line-width": ["interpolate", ["exponential", 1.4], ["zoom"], 12, 0.5, 16, 1.2, 19, 2], "line-dasharray": [2, 2]}},
+    {"id": "borders", "type": "line", "source": "offline", "source-layer": "boundaries", "minzoom": 9, "filter": ["==", ["get", "admin_level"], 2], "paint": {"line-color": "#a294b0", "line-width": ["interpolate", ["exponential", 1.4], ["zoom"], 6, 0.7, 10, 1.3, 15, 2], "line-dasharray": [4, 2], "line-opacity": 0.8}},
+    {"id": "department-borders", "type": "line", "source": "context-departments", "minzoom": 6.5, "maxzoom": 13, "paint": {"line-color": "#a799b0", "line-width": ["interpolate", ["linear"], ["zoom"], 6.5, 0.6, 10, 1.1, 13, 1.6], "line-dasharray": [4, 2], "line-opacity": 0.65}},
+    {"id": "ferries", "type": "line", "source": "offline", "source-layer": "ferries", "paint": {"line-color": "#76acc5", "line-width": 1, "line-dasharray": [4, 3]}},
+    {
+      "id": "water-labels", "type": "symbol", "source": "offline", "source-layer": "water_polygons_labels", "minzoom": 12,
+      "paint": {"text-color": "#6c9eb6", "text-halo-color": "#eef6f8", "text-halo-width": 1},
+      "layout": {"text-field": ["coalesce", ["get", "name"], ["get", "name_es"], ["get", "ref"], ""], "text-font": ["noto_sans_regular"], "text-size": 12, "text-max-width": 10}
+    },
+    {
+      "id": "street-labels", "type": "symbol", "source": "offline", "source-layer": "street_labels", "minzoom": 12,
+      "paint": {"text-color": "#4f514c", "text-halo-color": "#fffdf7", "text-halo-width": 1.5, "text-halo-blur": 0.4},
+      "layout": {"symbol-placement": "line", "text-field": ["coalesce", ["get", "name"], ["get", "name_es"], ["get", "ref"], ""], "text-font": ["noto_sans_regular"], "text-size": ["interpolate", ["exponential", 1.4], ["zoom"], 12, 10, 16, 12, 19, 14], "text-max-angle": 40, "symbol-spacing": 300}
+    },
+    {
+      "id": "context-country-labels", "type": "symbol", "source": "context-countries", "minzoom": 4, "maxzoom": 10,
+      "filter": ["all", ["==", ["get", "kind"], "label"], ["!=", ["get", "iso3"], "SLV"]],
+      "layout": {"text-field": ["get", "name"], "text-font": ["noto_sans_regular"], "text-size": 12, "text-transform": "uppercase", "text-letter-spacing": 0.12, "text-max-width": 11, "text-padding": 12},
+      "paint": {"text-color": "#9b929b", "text-halo-color": "#fffdf7", "text-halo-width": 1.8, "text-halo-blur": 0.4}
+    },
+    {
+      "id": "country-label", "type": "symbol", "source": "context-countries", "minzoom": 4, "maxzoom": 6.5,
+      "filter": ["all", ["==", ["get", "kind"], "label"], ["==", ["get", "iso3"], "SLV"]],
+      "layout": {"text-field": ["get", "name"], "text-font": ["noto_sans_bold"], "text-size": 15, "text-max-width": 12},
+      "paint": {"text-color": "#75697e", "text-halo-color": "#fffdf7", "text-halo-width": 1.8, "text-halo-blur": 0.4}
+    },
+    {
+      "id": "department-labels", "type": "symbol", "source": "context-department-labels", "minzoom": 6.5, "maxzoom": 10.5,
+      "layout": {"text-field": ["get", "name"], "text-font": ["noto_sans_bold"], "text-size": ["interpolate", ["linear"], ["zoom"], 6.5, 10, 8, 11, 10, 14], "text-max-width": 7.5, "text-line-height": 1.1, "text-padding": 3, "symbol-sort-key": ["-", 0, ["get", "area"]]},
+      "paint": {"text-color": "#75697e", "text-halo-color": "#fffdf7", "text-halo-width": 1.8, "text-halo-blur": 0.4}
+    },
+    {
+      "id": "place-labels", "type": "symbol", "source": "offline", "source-layer": "place_labels", "minzoom": 9.5,
+      "paint": {"text-color": "#4f514c", "text-halo-color": "#fffdf7", "text-halo-width": 1.5, "text-halo-blur": 0.4},
+      "layout": {"text-field": ["coalesce", ["get", "name"], ["get", "name_es"], ["get", "ref"], ""], "text-font": ["noto_sans_bold"], "text-size": ["match", ["get", "kind"], "city", 16, "town", 14, "village", 12, 11], "text-max-width": 10, "text-padding": 8, "symbol-sort-key": ["match", ["get", "kind"], "city", 0, "town", 1, "village", 2, 3]},
+      "filter": ["step", ["zoom"], ["==", ["get", "kind"], "city"], 10.5, ["match", ["get", "kind"], ["city", "town"], true, false], 12, ["match", ["get", "kind"], ["city", "town", "village"], true, false], 14, true]
+    },
+    {
+      "id": "poi-dots", "type": "circle", "source": "offline", "source-layer": "pois", "minzoom": 15,
+      "paint": {"circle-color": "#9d8cb2", "circle-radius": 2.3, "circle-stroke-color": "#fff", "circle-stroke-width": 1},
+      "filter": ["any", ["!=", ["coalesce", ["get", "name"], ""], ""], ["!=", ["coalesce", ["get", "name_es"], ""], ""]]
+    },
+    {
+      "id": "poi-labels", "type": "symbol", "source": "offline", "source-layer": "pois", "minzoom": 16,
+      "paint": {"text-color": "#72657e", "text-halo-color": "#fff", "text-halo-width": 1.4},
+      "layout": {"text-field": ["case", ["!=", ["coalesce", ["get", "name_es"], ""], ""], ["get", "name_es"], ["coalesce", ["get", "name"], ""]], "text-font": ["noto_sans_regular"], "text-size": 11, "text-anchor": "top", "text-offset": [0, 0.6], "text-max-width": 12, "text-padding": 4},
+      "filter": ["any", ["!=", ["coalesce", ["get", "name"], ""], ""], ["!=", ["coalesce", ["get", "name_es"], ""], ""]]
+    },
+    {
+      "id": "house-numbers", "type": "symbol", "source": "offline", "source-layer": "addresses", "minzoom": 18,
+      "paint": {"text-color": "#9a958e", "text-halo-color": "#fff", "text-halo-width": 1},
+      "layout": {"text-field": ["get", "housenumber"], "text-font": ["noto_sans_regular"], "text-size": 10}
+    }
+  ]
+}

@@ -12,7 +12,7 @@
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-apache_2.0-3da638.svg?style=flat" alt="Licencia Apache 2.0"></a>
     <img src="https://img.shields.io/badge/python-3.12+-3776AB.svg" alt="Python 3.12">
     <img src="https://img.shields.io/badge/platform-windows-0078D4.svg" alt="Windows">
-    <img src="https://img.shields.io/badge/model-verdict_3-d99a49.svg?style=flat" alt="verdict 4 Astra">
+    <img src="https://img.shields.io/badge/model-verdict_4_astra-d99a49.svg?style=flat" alt="verdict 4 Astra">
   </p>
   <p><strong>v0.1.5 · Helm of the Radiant Rose</strong></p>
 
@@ -28,11 +28,11 @@ La ruta principal prioriza el tiempo total de llegada: puede atravesar tráfico 
 
 ##  Planifiación de rutas
 
-![Mapa de rutas](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture1.jpg)
+![Mapa de rutas](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture1.png)
 
 ##  Mapa de tráfico estimado
 
-![Mapa de tráfico estimado](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture2.jpg)
+![Mapa de tráfico estimado](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Capture2.png)
 
 
 La vista tráfico permite explorar las condiciones estimadas para la fecha y hora seleccionadas:
@@ -45,10 +45,17 @@ Las calles locales aparecen al acercarse al mapa para mantener una vista más cl
 
 ##  Características
 
-- Hasta tres opciones de ruta con diversidad geográfica, cuando existen alternativas suficientemente eficientes
-- Cálculo de tiempos con tráfico, considerando las velocidades previstas durante el recorrido
-- Selección de fecha y hora, con controles de horas, minutos y AM/PM
-- Búsqueda local de calles y selección de inicio y destino sobre el mapa
+- Hasta tres rutas con recorridos distintos, Navia muestra alternativas cuando encuentra opciones suficientemente diferentes y con tiempos competitivos.
+- Estimación de viaje por tramo, Verdict 4 Astra usa franjas de 15 minutos para estimar el tráfico a la hora prevista de paso por cada tramo e incorpora las esperas en cruces y semáforos.
+- Planificación por hora y día, después del primer cálculo, Navia actualiza las rutas automáticamente si cambias la salida.
+- Búsqueda de lugares con OpenStreetMap, Busca una ubicación y úsala directamente como inicio o destino.
+- Mapa de tráfico por tramos. En modo Tráfico, los colores de la ruta indican la congestión estimada. En modo Normal, cada ruta mantiene un color sólido.
+- Duración visible sobre el mapa, La ruta seleccionada destaca con un borde blanco y muestra su tiempo estimado en una burbuja.
+- Cálculo local en CPU, la estimación del tráfico y el cálculo de rutas se ejecutan localmente en tu equipo.
+
+---
+
+![Vedict 4 Astra](https://raw.githubusercontent.com/SpringdanceShrub/Navia/refs/heads/main/docs/assets/Release%20v0.1.5/Vedict%204%20Astra.png)
 
 ##  Impulsado por Verdict 4 Astra
 
@@ -65,6 +72,7 @@ Cada combinación también tiene una probabilidad de tráfico moderado y otra de
 ## Información extra
 
 Puede obtener más información técnica sobre el proyecto consultando nuestro PDF informativo haciendo clic <a href="docs/Info.pdf">aquí</a>
+<br>
 Puede ver los avances del proyecto consultando nuestro PDF informativo haciendo clic <a href="docs/Info1.5.pdf">aquí</a>
 
 ##  Instalación
@@ -73,7 +81,32 @@ Puede ver los avances del proyecto consultando nuestro PDF informativo haciendo 
 
 - Windows
 - Python 3.12+
-- Conexión a Internet para instalar las dependencias y cargar el mapa base
+- Conexión a Internet para instalar las dependencias
+
+<details>
+<summary><strong>Librerías y versiones</strong></summary>
+
+Las dependencias de Python se instalan automáticamente al ejecutar `Navia.bat`.
+
+| Librería | Versión |
+|---|---|
+| Flask | 3.1.3 |
+| NumPy | 2.5.4 |
+| Numba | 0.68.0 |
+| Shapely | 2.2.0 |
+| PyArrow | 26.0.0 |
+| PyProj | 3.8.0 |
+| RapidFuzz | 3.14.6 |
+| Blinker | 1.9.0 |
+| Certifi | 2026.10.19 |
+| Click | 8.5.0 |
+| ItsDangerous | 2.2.0 |
+| Jinja2 | 3.1.6 |
+| LLVMLite | 0.50.0 |
+| MarkupSafe | 3.0.4 |
+| Werkzeug | 3.1.9 |
+
+</details>
 
 ### Descargar e instalar Navia
 
@@ -103,7 +136,6 @@ La vista de tráfico muestra las condiciones de la hora seleccionada. Los tiempo
 > Las predicciones se basan en datos sintéticos apoyados en referencias parciales de tráfico habitual. No representan tráfico en tiempo real y pueden diferir de las condiciones reales
 
 - La primera consulta puede tardar más mientras se carga el modelo y se prepara el cálculo en CPU
-- El mapa base necesita Internet; la búsqueda de calles, las predicciones y las rutas se calculan con datos locales
 - Los tiempos de viaje son estimaciones. Accidentes, obras, clima y otros eventos pueden modificar las condiciones reales
 - Navia está en fase beta y puede tener errores
 
@@ -113,8 +145,13 @@ La vista de tráfico muestra las condiciones de la hora seleccionada. Los tiempo
 - Ruth Isabel Amaya Berríos - SMSS061025
 - William Daniel Roque Díaz - SMSS025025
 
-##  Licencias y atribución
+## Licencias y atribución
 
-- Navia: [Apache 2.0](LICENSE)
-- Datos viales · © OpenStreetMap contributors: [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/) · [Atribución](data/README.md)
-- Leaflet: [Licencia](frontend/vendor/leaflet/LICENSE)
+- Navia: [Apache 2.0](LICENSE).
+- Datos viales, mapa y búsquedas · © OpenStreetMap contributors distribuidos mediante BBBike y Geofabrik: [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/) · [Atribución y fuentes](data/README.md).
+- Fondo de países y costas · Natural Earth: [Dominio público](https://www.naturalearthdata.com/about/terms-of-use/).
+- Límites de El Salvador y sus departamentos · geoBoundaries gbOpen, basados en OpenStreetMap: [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/).
+- Leaflet: [Licencia BSD](frontend/vendor/leaflet/LICENSE).
+- MapLibre GL JS: [Licencia BSD](frontend/vendor/offline-map/licenses/MapLibre-BSD.txt).
+- Adaptador MapLibre para Leaflet: [Licencia ISC](frontend/vendor/offline-map/licenses/Leaflet-MapLibre-ISC.txt).
+- Fuentes Noto Sans: [SIL Open Font License 1.1](frontend/vendor/offline-map/licenses/NotoSans-OFL.txt).

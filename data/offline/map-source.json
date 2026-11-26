@@ -1,0 +1,100 @@
+{
+  "schema": "navia-offline-map-v1",
+  "built_at_utc": "2026-11-26T20:23:09.866706+00:00",
+  "data_provider": "BBBike.org",
+  "source_dataset": "OpenStreetMap country extract, Shortbread vector tiles",
+  "source_page": "https://data.bbbike.org/osm/region/central-america/el-salvador/",
+  "license": "Open Database License 1.0",
+  "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+  "attribution": "© OpenStreetMap contributors · BBBike.org",
+  "source_archive": {
+    "url": "https://data.bbbike.org/osm/mbtiles/region/central-america/el-salvador/el-salvador.osm.mbtiles-shortbread.zip",
+    "bytes": 34056492,
+    "sha256": "819e4575c4a7b4e0c88026914e58e793538ec0ad345e5d545f389f29bfcfe4b1",
+    "last_modified": "Mon, 23 Nov 2026 20:51:22 GMT"
+  },
+  "map_file": {
+    "path": "data/offline/map.mbtiles",
+    "bytes": 80412672,
+    "sha256": "ab5b63d446a6c4a4c135c7d16fa9d1fc69d8fa871a242cbc78b40594df4fed43"
+  },
+  "coverage": {
+    "country": "El Salvador",
+    "min_zoom": 0,
+    "max_native_zoom": 14,
+    "max_display_zoom": 19,
+    "bounds": [
+      -90.50091,
+      12.03598,
+      -87.58438,
+      14.45762
+    ],
+    "extent_source": "https://data.bbbike.org/osm/region/central-america/el-salvador/el-salvador.json",
+    "note": "Bounds from provider region polygon; source MBTiles east=0 metadata is incorrect. Display zoom 15–19 overzooms zoom 14 vector geometry."
+  },
+  "renderer": {
+    "url": "https://registry.npmjs.org/maplibre-gl/-/maplibre-gl-4.7.1.tgz",
+    "bytes": 7989733,
+    "sha256": "7e8a778cff03abad64ae19674977058616e1cf7c3712cabd1c35461ae465f923",
+    "last_modified": "Mon, 23 Sep 2024 09:03:00 GMT"
+  },
+  "leaflet_adapter": {
+    "url": "https://registry.npmjs.org/@maplibre/maplibre-gl-leaflet/-/maplibre-gl-leaflet-0.0.22.tgz",
+    "bytes": 9251,
+    "sha256": "577b338ed980801071a07c83450e20c344001a5df508ce02d2581f9aa73411cd",
+    "last_modified": "Tue, 16 Jul 2024 08:55:34 GMT"
+  },
+  "fonts": {
+    "name": "Noto Sans Regular/Bold (Latin)",
+    "license": "SIL Open Font License 1.1",
+    "license_url": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosans/OFL.txt",
+    "archive_url": "https://github.com/versatiles-org/versatiles-frontend/releases/download/v3.16.1/frontend-tiny.tar.gz",
+    "archive_sha256": "f31b74b12f6ea82378e3b3f3ddda5388d94a69634cdeb6da405d59f7e12e78eb",
+    "subset": {
+      "fontstacks": [
+        "noto_sans_regular",
+        "noto_sans_bold"
+      ],
+      "ranges": [
+        "0-255",
+        "256-511",
+        "512-767",
+        "768-1023"
+      ],
+      "file_count": 8,
+      "bytes": 831718
+    }
+  },
+  "style": {
+    "name": "Navia — El Salvador sin conexión",
+    "author": "Navia",
+    "external_requests": false,
+    "path": "frontend/vendor/offline-map/style.json",
+    "sha256": "07cb80068a1404457db5560c26a380f1b2f7e0308088e5265d85a566180f92ba"
+  },
+  "context": {
+    "manifest": "data/offline/context/context-source.json",
+    "sha256": "ac420f23c4d2fe33f20d62ee5b9d4716cc61cf3b54ae80199fdd4c3a3f7a244f",
+    "attribution": "Natural Earth · geoBoundaries · OpenStreetMap contributors",
+    "files": {
+      "countries": {
+        "path": "data/offline/context/countries.geojson",
+        "bytes": 2314618,
+        "sha256": "a19717290ef6b2f561941aeeaab8d69dc7a5fb94ce7be0dd035d762df2df4498",
+        "feature_count": 484
+      },
+      "departments": {
+        "path": "data/offline/context/departments.geojson",
+        "bytes": 923002,
+        "sha256": "b195b8b68302a8a446fd27ca3e2d18d82340ad322bca7e543252bc35f9ef2acc",
+        "feature_count": 14
+      },
+      "department-labels": {
+        "path": "data/offline/context/department-labels.geojson",
+        "bytes": 2503,
+        "sha256": "f0446ecf8baed0ef3760d9ff6c3be18f3d92bb30903d223e8d2e5bc33c2e2840",
+        "feature_count": 14
+      }
+    }
+  }
+}

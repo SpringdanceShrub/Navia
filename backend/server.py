@@ -1,22 +1,21 @@
 from pathlib import Path
 from threading import Lock,RLock
-import hashlib,json,math,unicodedata
-import numpy as np
+import hashlib,json,math
 from flask import Flask,jsonify,request,send_from_directory
-from rapidfuzz import fuzz
 from .network import Network
 from .registry import ModelRegistry
 from .traffic import TrafficService,local_datetime
 from .router import Router,NoRouteError
 from .country import validate_route_point
+from .offline_search import PlacesIndex
+from .offline_map import register_offline_map
 
 ROOT=Path(__file__).resolve().parents[1]
 
-def normalized(value):
-    return ' '.join(''.join(c for c in unicodedata.normalize('NFKD',value) if not unicodedata.combining(c)).casefold().split())
-
 class Services:
-    def __init__(self,root):self.root=Path(root);self.lock=RLock();self.route_lock=Lock();self.network=None;self.search_index=None
+    def __init__(self,root):
+        self.root=Path(root);self.lock=RLock();self.route_lock=Lock();self.network=None
+        self.places=PlacesIndex(self.root/'data/offline/places.sqlite')
     def ready(self):
         with self.lock:
             if self.network is None:
@@ -24,23 +23,13 @@ class Services:
                 self.traffic=TrafficService(self.network);self.router=Router(self.network,self.traffic)
         return self
     def search(self,query):
-        with self.lock:
-            if self.search_index is None:
-                records=[];seen=set();n=self.network
-                for i,name in enumerate(n.names):
-                    if not name or not n.navigable[i]:continue
-                    name_key=normalized(name);key=(name_key,round(float(n.lon[i]),2),round(float(n.lat[i]),2))
-                    if key in seen:continue
-                    seen.add(key);records.append((name_key,{'name':name,'label':'El Salvador','lon':float(n.lon[i]),'lat':float(n.lat[i])}))
-                self.search_index=records
-        key=normalized(query)
-        ranked=sorted(((100. if key==name else 96. if key in name else float(fuzz.WRatio(key,name)),record) for name,record in self.search_index),key=lambda x:-x[0])
-        return [{**record,'score':round(score,1)} for score,record in ranked[:8] if score>=55]
+        return self.places.search(query)
 
 def create_app(root=ROOT):
     root=Path(root);app=Flask(__name__,static_folder=str(root/'frontend'),static_url_path='/frontend')
     app.config.update(MAX_CONTENT_LENGTH=16384,JSON_SORT_KEYS=False)
     services=Services(root);app.extensions['navia']=services
+    register_offline_map(app,root)
 
     @app.get('/')
     def index():return send_from_directory(root/'frontend','index.html')
@@ -48,7 +37,7 @@ def create_app(root=ROOT):
     @app.get('/api/status')
     def status():
         s=services.ready()
-        return jsonify(ready=True,execution='CPU',segments=len(s.network.segment_ids),timezone='America/El_Salvador')
+        return jsonify(ready=True,execution='CPU',segments=len(s.network.segment_ids),timezone='America/El_Salvador',offline=True,offline_version=1)
 
     @app.get('/api/models')
     def models():
@@ -59,7 +48,7 @@ def create_app(root=ROOT):
     @app.get('/search')
     def search():
         query=request.args.get('q','').strip()[:120]
-        return jsonify(services.ready().search(query) if len(query)>=2 else [])
+        return jsonify(services.search(query) if len(query)>=2 else [])
 
     @app.get('/api/traffic')
     def traffic():
@@ -68,7 +57,7 @@ def create_app(root=ROOT):
         except ValueError:raise ValueError('Límites del mapa inválidos.') from None
         if not math.isfinite(zoom) or not 0<=zoom<=20:raise ValueError('Zoom inválido.')
         at=local_datetime(request.args.get('at'))
-        return jsonify(s.traffic.view(model,bbox,zoom,at))
+        return jsonify(s.traffic.view(model,bbox,zoom,at,compact=request.args.get('format')=='display'))
 
     @app.post('/route')
     @app.post('/api/routes')
@@ -96,6 +85,12 @@ def create_app(root=ROOT):
     @app.after_request
     def headers(response):
         response.headers['X-Content-Type-Options']='nosniff'
-        if request.path.startswith('/api/') or request.path=='/route':response.headers['Cache-Control']='no-store'
+        response.headers['Content-Security-Policy']=(
+            "default-src 'self'; connect-src 'self'; script-src 'self'; "
+            "style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; "
+            "font-src 'self' data:; worker-src 'self' blob:; object-src 'none'; "
+            "base-uri 'self'; frame-ancestors 'none'")
+        if (request.path.startswith('/api/') or request.path=='/route') and 'Cache-Control' not in response.headers:
+            response.headers['Cache-Control']='no-store'
         return response
     return app
