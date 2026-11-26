@@ -99,6 +99,16 @@ def requirements_satisfied(requirements):
     return count > 0
 
 
+def run_dependency_install(root, source_args):
+    if subprocess.run([sys.executable, '-m', 'pip', '--version'],
+                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode:
+        subprocess.run([sys.executable, '-m', 'ensurepip', '--upgrade'], check=True)
+    subprocess.run([sys.executable, '-m', 'pip', '--isolated', 'install', '--disable-pip-version-check',
+                    *source_args, '--only-binary=:all:', '--no-input', '-r', str(root / 'requirements.txt')],
+                   cwd=root, check=True)
+    subprocess.run([sys.executable, '-m', 'pip', '--isolated', 'check'], cwd=root, check=True)
+
+
 def install_requirements(root):
     requirements = root / 'requirements.txt'
     if requirements_satisfied(requirements):
@@ -109,7 +119,15 @@ def install_requirements(root):
     preparation = ('En un equipo con Internet y la misma version de Python y sistema operativo, '
                    'ejecute python tools/prepare_offline_wheels.py y copie data/wheels con Navia.')
     if not manifest_path.is_file():
-        raise SetupError('Faltan dependencias y no hay un paquete local de wheels. ' + preparation)
+        print('[2/3] Instalando las dependencias desde PyPI. Esta instalacion necesita Internet...', flush=True)
+        try:
+            run_dependency_install(root, ['--index-url', 'https://pypi.org/simple'])
+        except subprocess.CalledProcessError as error:
+            raise SetupError('No se pudieron instalar las dependencias. Comprueba la conexion a Internet '
+                             'y vuelve a abrir Navia. Revisa tambien el error de instalacion mostrado arriba.') from error
+        if not requirements_satisfied(requirements):
+            raise SetupError('Las dependencias no completaron la instalacion. Revisa el error mostrado arriba.')
+        return
     try:
         manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
         expected_target = {
@@ -133,13 +151,7 @@ def install_requirements(root):
     except (OSError, ValueError, KeyError, TypeError) as error:
         raise SetupError('El manifiesto de dependencias offline esta incompleto o no es valido. ' + preparation) from error
     print('[2/3] Instalando las dependencias desde los archivos locales...', flush=True)
-    if subprocess.run([sys.executable, '-m', 'pip', '--version'],
-                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode:
-        subprocess.run([sys.executable, '-m', 'ensurepip', '--upgrade'], check=True)
-    subprocess.run([sys.executable, '-m', 'pip', '--isolated', 'install', '--disable-pip-version-check',
-                    '--no-index', '--find-links', str(wheelhouse), '--only-binary=:all:',
-                    '--no-input', '-r', str(requirements)], cwd=root, check=True)
-    subprocess.run([sys.executable, '-m', 'pip', '--isolated', 'check'], cwd=root, check=True)
+    run_dependency_install(root, ['--no-index', '--find-links', str(wheelhouse)])
     if not requirements_satisfied(requirements):
         raise SetupError('Las dependencias locales no completaron la instalacion. ' + preparation)
 
