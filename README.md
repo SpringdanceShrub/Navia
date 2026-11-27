@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/badge/platform-windows-0078D4.svg" alt="Windows">
     <img src="https://img.shields.io/badge/model-verdict_4_astra-d99a49.svg?style=flat" alt="verdict 4 Astra">
   </p>
-  <p><strong>v0.1.5 · Helm of the Radiant Rose</strong></p>
+  <p><strong>v0.1.6 · Helm of the Radiant Rose</strong></p>
 
 </div>
 
